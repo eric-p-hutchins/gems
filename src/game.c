@@ -1,6 +1,8 @@
 #include <stdlib.h>
 
 #include "game.h"
+#include "splash.h"
+#include "menu.h"
 
 int N_KEYS = 512;
 
@@ -30,6 +32,15 @@ game_destroy (game_t *game)
 void
 game_loop (game_t *game)
 {
+  switch (game->state)
+    {
+    case SPLASH_STATE:
+      splash_loop (game);
+      break;
+    case MENU_STATE:
+      menu_loop (game);
+      break;
+    }
   int i;
   for (i = 0; i < N_KEYS; ++i)
     {

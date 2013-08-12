@@ -5,7 +5,7 @@
 
 #include "SDL.h"
 
-typedef enum { SPLASH_STATE } state_t;
+typedef enum { SPLASH_STATE, MENU_STATE, QUIT_STATE } state_t;
 
 typedef struct game_s game_t;
 struct game_s {
