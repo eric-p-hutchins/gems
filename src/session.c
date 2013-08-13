@@ -47,11 +47,13 @@ session_loop (game_t *game)
   int i;
   int j;
   int k;
-  for (i = 2; i < game->n_rows; ++i)
+  int l;
+  for (i = 0; i < game->n_rows; ++i)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
-          if (game->board[j][i] == game->board[j][i-1]
+          if (i >= 2
+              && game->board[j][i] == game->board[j][i-1]
               && game->board[j][i] == game->board[j][i-2])
             {
               for (k = i; k > 2; --k)
@@ -61,6 +63,21 @@ session_loop (game_t *game)
               game->board[j][0] = rand () % game->n_gem_types;
               game->board[j][1] = rand () % game->n_gem_types;
               game->board[j][2] = rand () % game->n_gem_types;
+            }
+          if (j < game->n_cols - 2
+              && game->board[j][i] == game->board[j+1][i]
+              && game->board[j][i] == game->board[j+2][i])
+            {
+              for (l = j; l < j + 3; ++l)
+                {
+                  for (k = i; k > 0; --k)
+                    {
+                      game->board[l][k] = game->board[l][k-1];
+                    }
+                }
+              game->board[j][0] = rand () % game->n_gem_types;
+              game->board[j+1][0] = rand () % game->n_gem_types;
+              game->board[j+2][0] = rand () % game->n_gem_types;
             }
         }
     }
