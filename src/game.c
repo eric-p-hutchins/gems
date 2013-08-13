@@ -62,3 +62,15 @@ game_key_released (game_t *game, SDLKey key)
 {
   return game->prev_key_states[key] && !game->key_states[key];
 }
+
+void
+game_start (game_t *game)
+{
+  game->state = SESSION_STATE;
+}
+
+void
+game_quit (game_t *game)
+{
+  game->state = QUIT_STATE;
+}

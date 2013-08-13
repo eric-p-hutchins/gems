@@ -25,4 +25,7 @@ bool game_key_released (game_t *game, SDLKey key);
 void game_loop (game_t *game);
 void game_destroy ();
 
+void game_start (game_t *game);
+void game_quit (game_t *game);
+
 #endif
