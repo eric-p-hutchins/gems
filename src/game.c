@@ -66,7 +66,7 @@ game_key_released (game_t *game, SDLKey key)
 void
 game_start (game_t *game)
 {
-  game->state = SESSION_STATE;
+  session_start (game);
 }
 
 void

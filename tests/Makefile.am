@@ -15,12 +15,14 @@ TESTS = \
  escape-quits-from-menu \
  menu-selection \
  menu-enter-triggers \
- menu-after-splash
+ menu-after-splash \
+ session-starts-with-no-matches
 
 GAME_SOURCES = \
  ../src/game.c \
  ../src/splash.c \
- ../src/menu.c
+ ../src/menu.c \
+ ../src/session.c
 
 loop_exists_SOURCES = loop-exists.c $(GAME_SOURCES)
 frame_starts_at_zero_SOURCES = frame-starts-at-zero.c $(GAME_SOURCES)
@@ -37,5 +39,6 @@ escape_quits_from_menu_SOURCES = escape-quits-from-menu.c $(GAME_SOURCES)
 menu_selection_SOURCES = menu-selection.c $(GAME_SOURCES)
 menu_enter_triggers_SOURCES = menu-enter-triggers.c $(GAME_SOURCES)
 menu_after_splash_SOURCES = menu-after-splash.c $(GAME_SOURCES)
+session_starts_with_no_matches_SOURCES = session-starts-with-no-matches.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)

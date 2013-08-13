@@ -4,4 +4,5 @@ gems_SOURCES = \
  main.c \
  game.c \
  splash.c \
- menu.c
+ menu.c \
+ session.c
