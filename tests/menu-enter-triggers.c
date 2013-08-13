@@ -15,7 +15,7 @@ increment_value (game_t *game)
 void
 start (game_t *game)
 {
-  game->state = SESSION_STATE;
+  game_start (game);
 }
 
 void

@@ -40,3 +40,28 @@ session_start (game_t *game)
         }
     }
 }
+
+void
+session_loop (game_t *game)
+{
+  int i;
+  int j;
+  int k;
+  for (i = 2; i < game->n_rows; ++i)
+    {
+      for (j = 0; j < game->n_cols; ++j)
+        {
+          if (game->board[j][i] == game->board[j][i-1]
+              && game->board[j][i] == game->board[j][i-2])
+            {
+              for (k = i; k > 2; --k)
+                {
+                  game->board[j][k] = game->board[j][k-3];
+                }
+              game->board[j][0] = rand () % game->n_gem_types;
+              game->board[j][1] = rand () % game->n_gem_types;
+              game->board[j][2] = rand () % game->n_gem_types;
+            }
+        }
+    }
+}

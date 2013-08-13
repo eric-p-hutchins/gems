@@ -3,6 +3,7 @@
 #include "game.h"
 #include "splash.h"
 #include "menu.h"
+#include "session.h"
 
 int N_KEYS = 512;
 
@@ -41,6 +42,9 @@ game_loop (game_t *game)
       break;
     case MENU_STATE:
       menu_loop (game);
+      break;
+    case SESSION_STATE:
+      session_loop (game);
       break;
     }
   int i;

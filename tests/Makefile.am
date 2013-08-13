@@ -16,7 +16,8 @@ TESTS = \
  menu-selection \
  menu-enter-triggers \
  menu-after-splash \
- session-starts-with-no-matches
+ session-starts-with-no-matches \
+ three-in-column-drops-new-ones
 
 GAME_SOURCES = \
  ../src/game.c \
@@ -40,5 +41,6 @@ menu_selection_SOURCES = menu-selection.c $(GAME_SOURCES)
 menu_enter_triggers_SOURCES = menu-enter-triggers.c $(GAME_SOURCES)
 menu_after_splash_SOURCES = menu-after-splash.c $(GAME_SOURCES)
 session_starts_with_no_matches_SOURCES = session-starts-with-no-matches.c $(GAME_SOURCES)
+three_in_column_drops_new_ones_SOURCES = three-in-column-drops-new-ones.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)
