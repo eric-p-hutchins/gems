@@ -2,6 +2,8 @@
 
 #include "game.h"
 
+#include "test.h"
+
 int
 main ()
 {
@@ -14,22 +16,10 @@ main ()
   game->key_states[SDLK_b] = true;
   game->key_states[SDLK_c] = false;
   game->key_states[SDLK_d] = true;
-  if (game_key_pressed (game, SDLK_a))
-    {
-      exit (1);
-    }
-  if (!game_key_pressed (game, SDLK_b))
-    {
-      exit (1);
-    }
-  if (game_key_pressed (game, SDLK_c))
-    {
-      exit (1);
-    }
-  if (game_key_pressed (game, SDLK_d))
-    {
-      exit (1);
-    }
+  fail_if (game_key_pressed (game, SDLK_a));
+  fail_if (!game_key_pressed (game, SDLK_b));
+  fail_if (game_key_pressed (game, SDLK_c));
+  fail_if (game_key_pressed (game, SDLK_d));
   game_destroy (game);
   return 0;
 }

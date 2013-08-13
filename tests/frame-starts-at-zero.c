@@ -2,14 +2,13 @@
 
 #include "game.h"
 
+#include "test.h"
+
 int
 main ()
 {
   game_t *game = game_create ();
-  if (game->frame != 0)
-    {
-      exit (1);
-    }
+  fail_if (game->frame != 0);
   game_destroy (game);
   return 0;
 }

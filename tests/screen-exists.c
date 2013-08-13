@@ -2,22 +2,15 @@
 
 #include "game.h"
 
+#include "test.h"
+
 int
 main ()
 {
   game_t *game = game_create ();
-  if (game->screen == NULL)
-    {
-      exit (1);
-    }
-  if (game->screen->w != 320)
-    {
-      exit (1);
-    }
-  if (game->screen->h != 240)
-    {
-      exit (1);
-    }
+  fail_if (game->screen == NULL);
+  fail_if (game->screen->w != 320);
+  fail_if (game->screen->h != 240);
   game_destroy (game);
   return 0;
 }

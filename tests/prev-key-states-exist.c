@@ -2,14 +2,13 @@
 
 #include "game.h"
 
+#include "test.h"
+
 int
 main ()
 {
   game_t *game = game_create ();
-  if (game->prev_key_states == NULL)
-    {
-      exit (1);
-    }
+  fail_if (game->prev_key_states == NULL);
   game_destroy (game);
   return 0;
 }

@@ -2,6 +2,8 @@
 
 #include "game.h"
 
+#include "test.h"
+
 int
 main ()
 {
@@ -9,52 +11,30 @@ main ()
   game->state = MENU_STATE;
   game->n_menu_items = 3;
   game->menu_cursor = 0;
-  game->key_states[SDLK_DOWN] = true;
-  game_loop (game);
-  if (game->menu_cursor != 1)
-    {
-      exit (1);
-    }
-  game->key_states[SDLK_DOWN] = false;
-  game_loop (game);
-  game->key_states[SDLK_DOWN] = true;
-  game_loop (game);
-  if (game->menu_cursor != 2)
-    {
-      exit (1);
-    }
-  game->key_states[SDLK_DOWN] = false;
-  game_loop (game);
-  game->key_states[SDLK_DOWN] = true;
-  game_loop (game);
-  if (game->menu_cursor != 0)
-    {
-      exit (1);
-    }
-  game->key_states[SDLK_UP] = false;
-  game_loop (game);
-  game->key_states[SDLK_UP] = true;
-  game_loop (game);
-  if (game->menu_cursor != 2)
-    {
-      exit (1);
-    }
-  game->key_states[SDLK_UP] = false;
-  game_loop (game);
-  game->key_states[SDLK_UP] = true;
-  game_loop (game);
-  if (game->menu_cursor != 1)
-    {
-      exit (1);
-    }
-  game->key_states[SDLK_UP] = false;
-  game_loop (game);
-  game->key_states[SDLK_UP] = true;
-  game_loop (game);
-  if (game->menu_cursor != 0)
-    {
-      exit (1);
-    }
+
+  press_key_and_loop (game, SDLK_DOWN);
+  fail_if (game->menu_cursor != 1);
+  release_key_and_loop (game, SDLK_DOWN);
+
+  press_key_and_loop (game, SDLK_DOWN);
+  fail_if (game->menu_cursor != 2);
+  release_key_and_loop (game, SDLK_DOWN);
+
+  press_key_and_loop (game, SDLK_DOWN);
+  fail_if (game->menu_cursor != 0);
+  release_key_and_loop (game, SDLK_DOWN);
+
+  press_key_and_loop (game, SDLK_UP);
+  fail_if (game->menu_cursor != 2);
+  release_key_and_loop (game, SDLK_UP);
+
+  press_key_and_loop (game, SDLK_UP);
+  fail_if (game->menu_cursor != 1);
+  release_key_and_loop (game, SDLK_UP);
+
+  press_key_and_loop (game, SDLK_UP);
+  fail_if (game->menu_cursor != 0);
+
   game_destroy (game);
   return 0;
 }
