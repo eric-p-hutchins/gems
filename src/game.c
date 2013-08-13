@@ -16,7 +16,9 @@ game_create ()
   game->screen = screen;
   game->state = SPLASH_STATE;
   game->key_states = (bool*)malloc (sizeof (bool) * N_KEYS);
+  memset (game->key_states, false, N_KEYS);
   game->prev_key_states = (bool*)malloc (sizeof (bool) * N_KEYS);
+  memset (game->prev_key_states, false, N_KEYS);
   return game;
 }
 

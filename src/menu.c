@@ -8,4 +8,20 @@ menu_loop (game_t *game)
     {
       game->state = QUIT_STATE;
     }
+  if (game_key_pressed (game, SDLK_DOWN))
+    {
+      ++game->menu_cursor;
+      if (game->menu_cursor >= game->n_menu_items)
+        {
+          game->menu_cursor = 0;
+        }
+    }
+  else if (game_key_pressed (game, SDLK_UP))
+    {
+      --game->menu_cursor;
+      if (game->menu_cursor < 0)
+        {
+          game->menu_cursor = game->n_menu_items - 1;
+        }
+    }
 }

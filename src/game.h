@@ -14,6 +14,8 @@ struct game_s {
   bool *prev_key_states;
   SDL_Surface *screen;
   int frame;
+  int n_menu_items;
+  int menu_cursor;
 };
 
 game_t *game_create ();

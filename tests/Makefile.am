@@ -12,7 +12,8 @@ TESTS = \
  key-pressed \
  key-released \
  splash-is-short \
- escape-quits-from-menu
+ escape-quits-from-menu \
+ menu-selection
 
 GAME_SOURCES = \
  ../src/game.c \
@@ -31,5 +32,6 @@ key_pressed_SOURCES = key-pressed.c $(GAME_SOURCES)
 key_released_SOURCES = key-released.c $(GAME_SOURCES)
 splash_is_short_SOURCES = splash-is-short.c $(GAME_SOURCES)
 escape_quits_from_menu_SOURCES = escape-quits-from-menu.c $(GAME_SOURCES)
+menu_selection_SOURCES = menu-selection.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)
