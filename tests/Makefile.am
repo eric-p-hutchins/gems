@@ -18,7 +18,8 @@ TESTS = \
  menu-after-splash \
  session-starts-with-no-matches \
  three-in-column-drops-new-ones \
- three-in-row-drops-new-ones
+ three-in-row-drops-new-ones \
+ four-in-column-makes-special1
 
 GAME_SOURCES = \
  ../src/game.c \
@@ -44,5 +45,6 @@ menu_after_splash_SOURCES = menu-after-splash.c $(GAME_SOURCES)
 session_starts_with_no_matches_SOURCES = session-starts-with-no-matches.c $(GAME_SOURCES)
 three_in_column_drops_new_ones_SOURCES = three-in-column-drops-new-ones.c $(GAME_SOURCES)
 three_in_row_drops_new_ones_SOURCES = three-in-row-drops-new-ones.c $(GAME_SOURCES)
+four_in_column_makes_special1_SOURCES = four-in-column-makes-special1.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)
