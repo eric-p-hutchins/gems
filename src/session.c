@@ -42,6 +42,70 @@ session_start (game_t *game)
 }
 
 void
+handle_t_shape (game_t *game)
+{
+  int i, j;
+  for (i = 0; i < game->n_rows; ++i)
+    {
+      for (j = 0; j < game->n_cols; ++j)
+        {
+          if (j >= 1 && j < game->n_cols - 1
+              && i < game->n_rows - 2
+              && game->board[j][i] == game->board[j-1][i]
+              && game->board[j][i] == game->board[j+1][i]
+              && game->board[j][i] == game->board[j][i+1]
+              && game->board[j][i] == game->board[j][i+2])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j-1][i] = -1;
+              game->board[j+1][i] = -1;
+              game->board[j][i+1] = -1;
+              game->board[j][i+2] = -1;
+            }
+          else if (i >= 1 && i < game->n_rows - 1
+                   && j < game->n_cols - 2
+                   && game->board[j][i] == game->board[j][i-1]
+                   && game->board[j][i] == game->board[j][i+1]
+                   && game->board[j][i] == game->board[j+1][i]
+                   && game->board[j][i] == game->board[j+2][i])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j][i-1] = -1;
+              game->board[j][i+1] = -1;
+              game->board[j+1][i] = -1;
+              game->board[j+2][i] = -1;
+            }
+          else if (j >= 1 && j < game->n_cols - 1
+                   && i > 1
+                   && game->board[j][i] == game->board[j-1][i]
+                   && game->board[j][i] == game->board[j+1][i]
+                   && game->board[j][i] == game->board[j][i-1]
+                   && game->board[j][i] == game->board[j][i-2])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j-1][i] = -1;
+              game->board[j+1][i] = -1;
+              game->board[j][i-1] = -1;
+              game->board[j][i-2] = -1;
+            }
+          else if (i >= 1 && i < game->n_rows - 1
+                   && j > 1
+                   && game->board[j][i] == game->board[j][i-1]
+                   && game->board[j][i] == game->board[j][i+1]
+                   && game->board[j][i] == game->board[j-1][i]
+                   && game->board[j][i] == game->board[j-2][i])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j][i-1] = -1;
+              game->board[j][i+1] = -1;
+              game->board[j-1][i] = -1;
+              game->board[j-2][i] = -1;
+            }
+        }
+    }
+}
+
+void
 handle_three_in_row_or_column (game_t *game)
 {
   int i, j;
@@ -58,8 +122,8 @@ handle_three_in_row_or_column (game_t *game)
               game->board[j][i-2] = -1;
             }
           else if (j < game->n_cols - 2
-              && game->board[j][i] == game->board[j+1][i]
-              && game->board[j][i] == game->board[j+2][i])
+                   && game->board[j][i] == game->board[j+1][i]
+                   && game->board[j][i] == game->board[j+2][i])
             {
               game->board[j][i] = -1;
               game->board[j+1][i] = -1;
@@ -89,9 +153,9 @@ handle_four_in_row_or_column (game_t *game)
               game->board[j][i-3] = -1;
             }
           else if (j < game->n_cols - 3
-              && game->board[j][i] == game->board[j+1][i]
-              && game->board[j][i] == game->board[j+2][i]
-              && game->board[j][i] == game->board[j+3][i])
+                   && game->board[j][i] == game->board[j+1][i]
+                   && game->board[j][i] == game->board[j+2][i]
+                   && game->board[j][i] == game->board[j+3][i])
             {
               game->board[j+1][i] = game->board[j][i]
                 + game->n_gem_types;
@@ -127,6 +191,7 @@ drop_columns_to_fill_holes (game_t *game)
 void
 session_loop (game_t *game)
 {
+  handle_t_shape (game);
   handle_four_in_row_or_column (game);
   handle_three_in_row_or_column (game);
   drop_columns_to_fill_holes (game);

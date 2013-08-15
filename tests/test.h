@@ -1,6 +1,8 @@
 #ifndef TEST_H
 #define TEST_H
 
+#include "game.h"
+
 #define press_key_and_loop(game, key)  \
   game->key_states[key] = true;        \
   game_loop (game);
@@ -14,5 +16,8 @@
     {                                           \
       exit (1);                                 \
     }
+
+int **copy_board (game_t *game);
+void setup_board_every_gem_different (game_t *game);
 
 #endif
