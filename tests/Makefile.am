@@ -21,7 +21,8 @@ TESTS = \
  three-in-row-drops-new-ones \
  four-in-column-makes-special1 \
  four-in-row-makes-special1 \
- t-shape-makes-special2
+ t-shape-makes-special2 \
+ l-shape-makes-special2
 
 GAME_SOURCES = \
  test.c \
@@ -51,5 +52,6 @@ three_in_row_drops_new_ones_SOURCES = three-in-row-drops-new-ones.c $(GAME_SOURC
 four_in_column_makes_special1_SOURCES = four-in-column-makes-special1.c $(GAME_SOURCES)
 four_in_row_makes_special1_SOURCES = four-in-row-makes-special1.c $(GAME_SOURCES)
 t_shape_makes_special2_SOURCES = t-shape-makes-special2.c $(GAME_SOURCES)
+l_shape_makes_special2_SOURCES = l-shape-makes-special2.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)

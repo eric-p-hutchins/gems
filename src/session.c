@@ -106,6 +106,66 @@ handle_t_shape (game_t *game)
 }
 
 void
+handle_l_shape (game_t *game)
+{
+  int i, j;
+  for (i = 0; i < game->n_rows; ++i)
+    {
+      for (j = 0; j < game->n_cols; ++j)
+        {
+          if (j < game->n_cols - 2 && i < game->n_rows - 2
+              && game->board[j][i] == game->board[j+1][i]
+              && game->board[j][i] == game->board[j+2][i]
+              && game->board[j][i] == game->board[j][i+1]
+              && game->board[j][i] == game->board[j][i+2])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j+1][i] = -1;
+              game->board[j+2][i] = -1;
+              game->board[j][i+1] = -1;
+              game->board[j][i+2] = -1;
+            }
+          else if (i >= 2 && j < game->n_cols - 2
+                   && game->board[j][i] == game->board[j][i-1]
+                   && game->board[j][i] == game->board[j][i-2]
+                   && game->board[j][i] == game->board[j+1][i]
+                   && game->board[j][i] == game->board[j+2][i])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j][i-1] = -1;
+              game->board[j][i-2] = -1;
+              game->board[j+1][i] = -1;
+              game->board[j+2][i] = -1;
+            }
+          else if (j >= 2 && i >= 2
+                   && game->board[j][i] == game->board[j-1][i]
+                   && game->board[j][i] == game->board[j-2][i]
+                   && game->board[j][i] == game->board[j][i-1]
+                   && game->board[j][i] == game->board[j][i-2])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j-1][i] = -1;
+              game->board[j-2][i] = -1;
+              game->board[j][i-1] = -1;
+              game->board[j][i-2] = -1;
+            }
+          else if (j >= 2 && i < game->n_rows - 2
+                   && game->board[j][i] == game->board[j][i+1]
+                   && game->board[j][i] == game->board[j][i+2]
+                   && game->board[j][i] == game->board[j-1][i]
+                   && game->board[j][i] == game->board[j-2][i])
+            {
+              game->board[j][i] = game->board[j][i] + game->n_gem_types * 2;
+              game->board[j][i+1] = -1;
+              game->board[j][i+2] = -1;
+              game->board[j-1][i] = -1;
+              game->board[j-2][i] = -1;
+            }
+        }
+    }
+}
+
+void
 handle_three_in_row_or_column (game_t *game)
 {
   int i, j;
@@ -192,6 +252,7 @@ void
 session_loop (game_t *game)
 {
   handle_t_shape (game);
+  handle_l_shape (game);
   handle_four_in_row_or_column (game);
   handle_three_in_row_or_column (game);
   drop_columns_to_fill_holes (game);
