@@ -25,7 +25,7 @@ quit (game_t *game)
 }
 
 int
-main ()
+main (int argc, char *argv[])
 {
   game_t *game = game_create ();
   game->state = MENU_STATE;

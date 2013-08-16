@@ -5,7 +5,7 @@
 #include "test.h"
 
 int
-main ()
+main (int argc, char *argv[])
 {
   game_t *game = game_create ();
   game->prev_key_states[SDLK_a] = false;

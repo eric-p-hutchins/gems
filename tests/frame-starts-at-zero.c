@@ -5,7 +5,7 @@
 #include "test.h"
 
 int
-main ()
+main (int argc, char *argv[])
 {
   game_t *game = game_create ();
   fail_if (game->frame != 0);
