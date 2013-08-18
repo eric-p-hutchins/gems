@@ -228,6 +228,44 @@ handle_four_in_row_or_column (game_t *game)
 }
 
 void
+handle_five_in_row_or_column (game_t *game)
+{
+  int i, j;
+  for (i = 0; i < game->n_rows; ++i)
+    {
+      for (j = 0; j < game->n_cols; ++j)
+        {
+          if (i >= 4
+              && game->board[j][i] == game->board[j][i-1]
+              && game->board[j][i] == game->board[j][i-2]
+              && game->board[j][i] == game->board[j][i-3]
+              && game->board[j][i] == game->board[j][i-4])
+            {
+              game->board[j][i-2] = game->board[j][i]
+                + 3 * game->n_gem_types;
+              game->board[j][i] = -1;
+              game->board[j][i-1] = -1;
+              game->board[j][i-3] = -1;
+              game->board[j][i-4] = -1;
+            }
+          else if (j < game->n_cols - 4
+                   && game->board[j][i] == game->board[j+1][i]
+                   && game->board[j][i] == game->board[j+2][i]
+                   && game->board[j][i] == game->board[j+3][i]
+                   && game->board[j][i] == game->board[j+4][i])
+            {
+              game->board[j+2][i] = game->board[j][i]
+                + 3 * game->n_gem_types;
+              game->board[j][i] = -1;
+              game->board[j+1][i] = -1;
+              game->board[j+3][i] = -1;
+              game->board[j+4][i] = -1;
+            }
+        }
+    }
+}
+
+void
 drop_columns_to_fill_holes (game_t *game)
 {
   int i, j, k;
@@ -251,6 +289,7 @@ drop_columns_to_fill_holes (game_t *game)
 void
 session_loop (game_t *game)
 {
+  handle_five_in_row_or_column (game);
   handle_t_shape (game);
   handle_l_shape (game);
   handle_four_in_row_or_column (game);
