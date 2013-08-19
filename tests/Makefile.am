@@ -23,7 +23,8 @@ TESTS = \
  four-in-row-makes-special1 \
  t-shape-makes-special2 \
  l-shape-makes-special2 \
- five-in-row-or-col-makes-special3
+ five-in-row-or-col-makes-special3 \
+ arrow-keys-move-board-cursor
 
 GAME_SOURCES = \
  test.c \
@@ -55,5 +56,6 @@ four_in_row_makes_special1_SOURCES = four-in-row-makes-special1.c $(GAME_SOURCES
 t_shape_makes_special2_SOURCES = t-shape-makes-special2.c $(GAME_SOURCES)
 l_shape_makes_special2_SOURCES = l-shape-makes-special2.c $(GAME_SOURCES)
 five_in_row_or_col_makes_special3_SOURCES = five-in-row-or-col-makes-special3.c $(GAME_SOURCES)
+arrow_keys_move_board_cursor_SOURCES = arrow-keys-move-board-cursor.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)

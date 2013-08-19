@@ -19,6 +19,8 @@ struct game_s {
   void (**menu_functions)(game_t*);
   int n_cols;
   int n_rows;
+  int board_cursor_x;
+  int board_cursor_y;
   int n_gem_types;
   int **board;
 };

@@ -42,6 +42,39 @@ session_start (game_t *game)
 }
 
 void
+handle_keys (game_t *game)
+{
+  if (game_key_pressed (game, SDLK_LEFT))
+    {
+      if (game->board_cursor_x > 0)
+        {
+          --game->board_cursor_x;
+        }
+    }
+  else if (game_key_pressed (game, SDLK_RIGHT))
+    {
+      if (game->board_cursor_x < game->n_cols - 1)
+        {
+          ++game->board_cursor_x;
+        }
+    }
+  else if (game_key_pressed (game, SDLK_UP))
+    {
+      if (game->board_cursor_y > 0)
+        {
+          --game->board_cursor_y;
+        }
+    }
+  else if (game_key_pressed (game, SDLK_DOWN))
+    {
+      if (game->board_cursor_y < game->n_rows - 1)
+        {
+          ++game->board_cursor_y;
+        }
+    }
+}
+
+void
 handle_t_shape (game_t *game)
 {
   int i, j;
@@ -289,6 +322,7 @@ drop_columns_to_fill_holes (game_t *game)
 void
 session_loop (game_t *game)
 {
+  handle_keys (game);
   handle_five_in_row_or_column (game);
   handle_t_shape (game);
   handle_l_shape (game);
