@@ -35,6 +35,28 @@ game_destroy (game_t *game)
 void
 game_loop (game_t *game)
 {
+  SDL_Event event;
+  while (SDL_PollEvent (&event))
+    {
+      int sym;
+      switch (event.type)
+        {
+        case SDL_KEYDOWN:
+          sym = event.key.keysym.sym;
+          if (sym >= 0 && sym < 512)
+            {
+              game->key_states[sym] = true;
+            }
+          break;
+        case SDL_KEYUP:
+          sym = event.key.keysym.sym;
+          if (sym >= 0 && sym < 512)
+            {
+              game->key_states[sym] = false;
+            }
+          break;
+        }
+    }
   switch (game->state)
     {
     case SPLASH_STATE:
