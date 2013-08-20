@@ -16,6 +16,9 @@ game_create ()
   game->frame = 0;
   game->screen = screen;
   game->state = SPLASH_STATE;
+  game->fps = 0;
+  game->board_cursor_x = 0;
+  game->board_cursor_y = 0;
   game->key_states = (bool*)malloc (sizeof (bool) * N_KEYS);
   memset (game->key_states, false, N_KEYS);
   game->prev_key_states = (bool*)malloc (sizeof (bool) * N_KEYS);
@@ -42,6 +45,9 @@ game_loop (game_t *game)
       int sym;
       switch (event.type)
         {
+        case SDL_QUIT:
+          game->state = QUIT_STATE;
+          break;
         case SDL_KEYDOWN:
           sym = event.key.keysym.sym;
           if (sym >= 0 && sym < 512)
@@ -74,6 +80,10 @@ game_loop (game_t *game)
   for (i = 0; i < N_KEYS; ++i)
     {
       game->prev_key_states[i] = game->key_states[i];
+    }
+  if (game->fps > 0)
+    {
+      usleep (1000000 / game->fps);
     }
   ++game->frame;
 }

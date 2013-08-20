@@ -24,6 +24,7 @@ struct game_s {
   bool cursor_locked;
   int n_gem_types;
   int **board;
+  int fps;
 };
 
 game_t *game_create ();
