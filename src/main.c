@@ -1,7 +1,7 @@
 #include "game.h"
 
 int
-main ()
+main (int argc, char *argv[])
 {
   game_t *game = game_create ();
 
