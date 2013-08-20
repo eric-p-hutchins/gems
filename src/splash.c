@@ -4,7 +4,7 @@
 void
 splash_loop (game_t *game)
 {
-  if (game->frame >= 250)
+  if (game->frame >= 100)
     {
       game->state = MENU_STATE;
       game->menu_cursor = 0;
