@@ -2,7 +2,7 @@
 #include "game.h"
 
 void
-menu_loop (game_t *game)
+menu_handle_keys (game_t *game)
 {
   if (game_key_pressed (game, SDLK_ESCAPE))
     {
@@ -28,4 +28,19 @@ menu_loop (game_t *game)
     {
       game->menu_functions[game->menu_cursor](game);
     }
+}
+
+void
+menu_draw (game_t *game)
+{
+  Uint32 gray = SDL_MapRGB (game->screen->format, 192, 192, 192);
+  SDL_FillRect (game->screen, NULL, gray);
+  SDL_Flip (game->screen);
+}
+
+void
+menu_loop (game_t *game)
+{
+  menu_handle_keys (game);
+  menu_draw (game);
 }
