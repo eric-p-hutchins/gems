@@ -330,3 +330,95 @@ session_loop (game_t *game)
   handle_three_in_row_or_column (game);
   drop_columns_to_fill_holes (game);
 }
+
+bool
+session_matches_row_at_point (game_t *game, int type, int x, int y)
+{
+  if (x < game->n_cols - 2
+      && game->board[x+1][y] % game->n_gem_types == type
+      && game->board[x+2][y] % game->n_gem_types == type)
+    {
+      return true;
+    }
+  if (x > 0
+      && x < game->n_cols - 1
+      && game->board[x-1][y] % game->n_gem_types == type
+      && game->board[x+1][y] % game->n_gem_types == type)
+    {
+      return true;
+    }
+  if (x > 1
+      && game->board[x-1][y] % game->n_gem_types == type
+      && game->board[x-2][y] % game->n_gem_types == type)
+    {
+      return true;
+    }
+  return false;
+}
+
+bool
+session_matches_column_at_point (game_t *game, int type, int x, int y)
+{
+  if (y < game->n_rows - 2
+      && game->board[x][y+1] % game->n_gem_types == type
+      && game->board[x][y+2] % game->n_gem_types == type)
+    {
+      return true;
+    }
+  if (y > 0
+      && y < game->n_rows - 1
+      && game->board[x][y-1] % game->n_gem_types == type
+      && game->board[x][y+1] % game->n_gem_types == type)
+    {
+      return true;
+    }
+  if (y > 1
+      && game->board[x][y-1] % game->n_gem_types == type
+      && game->board[x][y-2] % game->n_gem_types == type)
+    {
+      return true;
+    }
+  return false;
+}
+
+bool
+session_matches_at_point (game_t *game, int type, int x, int y)
+{
+  return session_matches_row_at_point (game, type, x, y)
+    || session_matches_column_at_point (game, type, x, y);
+}
+
+bool
+session_legal_move (game_t *game, int x1, int y1, int x2, int y2)
+{
+  if (x1 < 0 || x1 > game->n_cols - 1 || y1 < 0 || y1 > game->n_rows - 1
+      || x2 < 0 || x2 > game->n_cols - 1 || y2 < 0 || y2 > game->n_rows - 1)
+    {
+      return false;
+    }
+  if (x1 - x2 < -1 || x1 - x2 > 1)
+    {
+      return false;
+    }
+  if (y1 - y2 < -1 || y1 - y2 > 1)
+    {
+      return false;
+    }
+  if ((x1 != x2 && y1 != y2)
+      || (x1 == x2 && y1 == y2))
+    {
+      return false;
+    }
+
+  if (game->board[x1][y1] / game->n_gem_types > 0
+      && game->board[x2][y2] / game->n_gem_types > 0)
+    {
+      return true;
+    }
+
+  int type1 = game->board[x1][y1] % game->n_gem_types;
+  int type2 = game->board[x2][y2] % game->n_gem_types;
+
+  return session_matches_at_point (game, type1, x2, y2)
+    || session_matches_at_point (game, type2, x1, y1);
+}
