@@ -21,6 +21,7 @@ struct game_s {
   int n_rows;
   int board_cursor_x;
   int board_cursor_y;
+  bool cursor_locked;
   int n_gem_types;
   int **board;
 };

@@ -46,30 +46,53 @@ handle_keys (game_t *game)
 {
   if (game_key_pressed (game, SDLK_LEFT))
     {
-      if (game->board_cursor_x > 0)
+      if (!game->cursor_locked)
         {
-          --game->board_cursor_x;
+          if (game->board_cursor_x > 0)
+            {
+              --game->board_cursor_x;
+            }
         }
     }
   else if (game_key_pressed (game, SDLK_RIGHT))
     {
-      if (game->board_cursor_x < game->n_cols - 1)
+      if (!game->cursor_locked)
         {
-          ++game->board_cursor_x;
+          if (game->board_cursor_x < game->n_cols - 1)
+            {
+              ++game->board_cursor_x;
+            }
         }
     }
   else if (game_key_pressed (game, SDLK_UP))
     {
-      if (game->board_cursor_y > 0)
+      if (!game->cursor_locked)
         {
-          --game->board_cursor_y;
+          if (game->board_cursor_y > 0)
+            {
+              --game->board_cursor_y;
+            }
         }
     }
   else if (game_key_pressed (game, SDLK_DOWN))
     {
-      if (game->board_cursor_y < game->n_rows - 1)
+      if (!game->cursor_locked)
         {
-          ++game->board_cursor_y;
+          if (game->board_cursor_y < game->n_rows - 1)
+            {
+              ++game->board_cursor_y;
+            }
+        }
+    }
+  else if (game_key_pressed (game, SDLK_SPACE))
+    {
+      if (game->cursor_locked)
+        {
+          game->cursor_locked = false;
+        }
+      else
+        {
+          game->cursor_locked = true;
         }
     }
 }
