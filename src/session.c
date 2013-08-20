@@ -2,6 +2,8 @@
 
 #include "game.h"
 
+#include "session.h"
+
 void
 session_start (game_t *game)
 {
@@ -44,6 +46,8 @@ session_start (game_t *game)
 void
 handle_keys (game_t *game)
 {
+  int x = game->board_cursor_x;
+  int y = game->board_cursor_y;
   if (game_key_pressed (game, SDLK_LEFT))
     {
       if (!game->cursor_locked)
@@ -51,6 +55,20 @@ handle_keys (game_t *game)
           if (game->board_cursor_x > 0)
             {
               --game->board_cursor_x;
+            }
+        }
+      else
+        {
+          if (game->board_cursor_x > 0)
+            {
+              if (session_legal_move (game, x, y, x - 1, y))
+                {
+                  int val = game->board[x][y];
+                  game->board[x][y] = game->board[x-1][y];
+                  game->board[x-1][y] = val;
+                  --game->board_cursor_x;
+                  game->cursor_locked = false;
+                }
             }
         }
     }
@@ -63,6 +81,20 @@ handle_keys (game_t *game)
               ++game->board_cursor_x;
             }
         }
+      else
+        {
+          if (game->board_cursor_x < game->n_cols - 1)
+            {
+              if (session_legal_move (game, x, y, x + 1, y))
+                {
+                  int val = game->board[x][y];
+                  game->board[x][y] = game->board[x+1][y];
+                  game->board[x+1][y] = val;
+                  ++game->board_cursor_x;
+                  game->cursor_locked = false;
+                }
+            }
+        }
     }
   else if (game_key_pressed (game, SDLK_UP))
     {
@@ -73,6 +105,20 @@ handle_keys (game_t *game)
               --game->board_cursor_y;
             }
         }
+      else
+        {
+          if (game->board_cursor_y > 0)
+            {
+              if (session_legal_move (game, x, y, x, y - 1))
+                {
+                  int val = game->board[x][y];
+                  game->board[x][y] = game->board[x][y-1];
+                  game->board[x][y-1] = val;
+                  --game->board_cursor_y;
+                  game->cursor_locked = false;
+                }
+            }
+        }
     }
   else if (game_key_pressed (game, SDLK_DOWN))
     {
@@ -81,6 +127,20 @@ handle_keys (game_t *game)
           if (game->board_cursor_y < game->n_rows - 1)
             {
               ++game->board_cursor_y;
+            }
+        }
+      else
+        {
+          if (game->board_cursor_y < game->n_rows - 1)
+            {
+              if (session_legal_move (game, x, y, x, y + 1))
+                {
+                  int val = game->board[x][y];
+                  game->board[x][y] = game->board[x][y+1];
+                  game->board[x][y+1] = val;
+                  ++game->board_cursor_y;
+                  game->cursor_locked = false;
+                }
             }
         }
     }

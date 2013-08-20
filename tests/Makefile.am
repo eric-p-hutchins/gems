@@ -26,7 +26,8 @@ TESTS = \
  five-in-row-or-col-makes-special3 \
  arrow-keys-move-board-cursor \
  legal-move \
- space-locks-board-cursor
+ space-locks-board-cursor \
+ move-locked-cursor
 
 GAME_SOURCES = \
  test.c \
@@ -61,5 +62,6 @@ five_in_row_or_col_makes_special3_SOURCES = five-in-row-or-col-makes-special3.c 
 arrow_keys_move_board_cursor_SOURCES = arrow-keys-move-board-cursor.c $(GAME_SOURCES)
 legal_move_SOURCES = legal-move.c $(GAME_SOURCES)
 space_locks_board_cursor_SOURCES = space-locks-board-cursor.c $(GAME_SOURCES)
+move_locked_cursor_SOURCES = move-locked-cursor.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)

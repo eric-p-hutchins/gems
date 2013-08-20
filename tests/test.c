@@ -21,6 +21,7 @@ copy_board (game_t *game)
 void
 setup_board_every_gem_different (game_t *game)
 {
+  game->n_gem_types = 1000000;
   int i, j;
   for (i = 0; i < game->n_cols; ++i)
     {
@@ -28,5 +29,15 @@ setup_board_every_gem_different (game_t *game)
         {
           game->board[i][j] = j * game->n_cols + i;
         }
+    }
+}
+
+void
+wait (game_t *game, int frames)
+{
+  int i;
+  for (i = 0; i < frames; ++i)
+    {
+      game_loop (game);
     }
 }
