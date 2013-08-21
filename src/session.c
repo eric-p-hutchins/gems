@@ -405,71 +405,102 @@ drop_columns_to_fill_holes (game_t *game)
 void
 session_draw (game_t *game)
 {
+  int board_w = 24 * game->n_cols;
+  int board_h = 24 * game->n_rows;
+  int board_x = (320 - board_w) / 2;
+  int board_y = (240 - board_h) / 2;
+
   SDL_Rect rect;
-  rect.w = 24 * game->n_cols;
-  rect.h = 24 * game->n_rows;
-  rect.x = (320 - rect.w) / 2;
-  rect.y = (240 - rect.h) / 2;
+  rect.w = board_w + 2;
+  rect.h = board_h + 2;
+  rect.x = board_x - 1;
+  rect.y = board_y - 1;
   Uint32 gray = SDL_MapRGB (game->screen->format, 192, 192, 192);
   Uint32 black = SDL_MapRGB (game->screen->format, 0, 0, 0);
+  Uint32 white = SDL_MapRGB (game->screen->format, 255, 255, 255);
   SDL_FillRect (game->screen, &rect, black);
   int i, j;
   for (i = 0; i < game->n_rows; ++i)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
+          if (game->board[j][i] == -1)
+            {
+              continue;
+            }
           SDL_Rect s;
-          s.x = rect.x + 24 * j;
-          s.y = rect.y + 24 * i;
+          s.x = board_x + 24 * j;
+          s.y = board_y + 24 * i;
           s.w = 24;
           s.h = 24;
           int type = game->board[j][i] % game->n_gem_types;
           int level = game->board[j][i] / game->n_gem_types;
           int v = 256 * type / game->n_gem_types;
           int r, g, b;
-          switch (level)
+          switch (type)
             {
             case 0:
-              r = g = b = v;
+              r = 255; g = 0; b = 0;
               break;
             case 1:
-              r = v;
-              g = b = 0;
+              r = 0; g = 255; b = 0;
               break;
             case 2:
-              g = v;
-              r = b = 0;
+              r = 0; g = 0; b = 255;
               break;
             case 3:
-              b = v;
-              r = b = 0;
+              r = 255; g = 255; b = 0;
               break;
             }
           Uint32 color = SDL_MapRGB (game->screen->format, r, g, b);
           SDL_FillRect (game->screen, &s, color);
+          int k;
+          for (k = 0; k < level + 1; ++k)
+            {
+              SDL_Rect outline_rect;
+              outline_rect.x = s.x + k * 2;
+              outline_rect.y = s.y + k * 2;
+              outline_rect.w = s.w - k * 4;
+              outline_rect.h = 1;
+              SDL_FillRect (game->screen, &outline_rect, white);
+              outline_rect.x = s.x + k * 2;
+              outline_rect.y = s.y + s.h - 1 - k * 2;
+              outline_rect.w = s.w - k * 4;
+              outline_rect.h = 1;
+              SDL_FillRect (game->screen, &outline_rect, black);
+              outline_rect.x = s.x + k * 2;
+              outline_rect.y = s.y + k * 2;
+              outline_rect.w = 1;
+              outline_rect.h = s.h - k * 4;
+              SDL_FillRect (game->screen, &outline_rect, white);
+              outline_rect.x = s.x + s.w - 1 - k * 2;
+              outline_rect.y = s.y + k * 2;
+              outline_rect.w = 1;
+              outline_rect.h = s.h - k * 4;
+              SDL_FillRect (game->screen, &outline_rect, black);
+            }
         }
     }
-  Uint32 white = SDL_MapRGB (game->screen->format, 255, 255, 255);
   Uint32 yellow = SDL_MapRGB (game->screen->format, 240, 240, 64);
   Uint32 cursor_color = game->cursor_locked?yellow:white;
   SDL_Rect cursor;
-  cursor.x = rect.x + game->board_cursor_x * 24;
-  cursor.y = rect.y + game->board_cursor_y * 24;
+  cursor.x = board_x + game->board_cursor_x * 24;
+  cursor.y = board_y + game->board_cursor_y * 24;
   cursor.w = 24;
   cursor.h = 2;
   SDL_FillRect (game->screen, &cursor, cursor_color);
-  cursor.x = rect.x + game->board_cursor_x * 24;
-  cursor.y = rect.y + game->board_cursor_y * 24 + 22;
+  cursor.x = board_x + game->board_cursor_x * 24;
+  cursor.y = board_y + game->board_cursor_y * 24 + 22;
   cursor.w = 24;
   cursor.h = 2;
   SDL_FillRect (game->screen, &cursor, cursor_color);
-  cursor.x = rect.x + game->board_cursor_x * 24;
-  cursor.y = rect.y + game->board_cursor_y * 24;
+  cursor.x = board_x + game->board_cursor_x * 24;
+  cursor.y = board_y + game->board_cursor_y * 24;
   cursor.w = 2;
   cursor.h = 24;
   SDL_FillRect (game->screen, &cursor, cursor_color);
-  cursor.x = rect.x + game->board_cursor_x * 24 + 22;
-  cursor.y = rect.y + game->board_cursor_y * 24;
+  cursor.x = board_x + game->board_cursor_x * 24 + 22;
+  cursor.y = board_y + game->board_cursor_y * 24;
   cursor.w = 2;
   cursor.h = 24;
   SDL_FillRect (game->screen, &cursor, cursor_color);
@@ -574,9 +605,24 @@ session_legal_move (game_t *game, int x1, int y1, int x2, int y2)
       return true;
     }
 
+  int p1 = game->board[x1][y1];
+  int p2 = game->board[x2][y2];
+
   int type1 = game->board[x1][y1] % game->n_gem_types;
   int type2 = game->board[x2][y2] % game->n_gem_types;
 
-  return session_matches_at_point (game, type1, x2, y2)
-    || session_matches_at_point (game, type2, x1, y1);
+  // Temporarily swap position 1 and 2 to test for a match
+
+  game->board[x2][y2] = p1;
+  game->board[x1][y1] = p2;
+
+  bool match1 = session_matches_at_point (game, type1, x2, y2);
+  bool match2 = session_matches_at_point (game, type2, x1, y1);
+
+  // Swap them back now that we know if they would have matched
+
+  game->board[x1][y1] = p1;
+  game->board[x2][y2] = p2;
+
+  return match1 || match2;
 }

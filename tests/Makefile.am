@@ -27,7 +27,8 @@ TESTS = \
  arrow-keys-move-board-cursor \
  legal-move \
  space-locks-board-cursor \
- move-locked-cursor
+ move-locked-cursor \
+ checkerboard-corners
 
 GAME_SOURCES = \
  test.c \
@@ -63,5 +64,6 @@ arrow_keys_move_board_cursor_SOURCES = arrow-keys-move-board-cursor.c $(GAME_SOU
 legal_move_SOURCES = legal-move.c $(GAME_SOURCES)
 space_locks_board_cursor_SOURCES = space-locks-board-cursor.c $(GAME_SOURCES)
 move_locked_cursor_SOURCES = move-locked-cursor.c $(GAME_SOURCES)
+checkerboard_corners_SOURCES = checkerboard-corners.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)
