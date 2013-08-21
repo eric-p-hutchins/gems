@@ -418,6 +418,7 @@ session_draw (game_t *game)
   Uint32 gray = SDL_MapRGB (game->screen->format, 192, 192, 192);
   Uint32 black = SDL_MapRGB (game->screen->format, 0, 0, 0);
   Uint32 white = SDL_MapRGB (game->screen->format, 255, 255, 255);
+  SDL_FillRect (game->screen, NULL, white);
   SDL_FillRect (game->screen, &rect, black);
   int i, j;
   for (i = 0; i < game->n_rows; ++i)
