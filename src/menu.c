@@ -33,8 +33,16 @@ menu_handle_keys (game_t *game)
 void
 menu_draw (game_t *game)
 {
+  Uint32 black = SDL_MapRGB (game->screen->format, 0, 0, 0);
+  Uint32 yellow = SDL_MapRGB (game->screen->format, 240, 240, 0);
   Uint32 gray = SDL_MapRGB (game->screen->format, 192, 192, 192);
   SDL_FillRect (game->screen, NULL, gray);
+  int i;
+  for (i = 0; i < game->n_menu_items; ++i)
+    {
+      SDL_Rect r = { 40, 40 + i * 60, 32, 32 };
+      SDL_FillRect (game->screen, &r, game->menu_cursor == i?yellow:black);
+    }
   SDL_Flip (game->screen);
 }
 
