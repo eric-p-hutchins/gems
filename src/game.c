@@ -13,6 +13,9 @@ game_create ()
   SDL_InitSubSystem (SDL_INIT_VIDEO);
   SDL_Surface *screen = SDL_SetVideoMode (320, 240, 32, 0);
   game_t *game = (game_t*)malloc (sizeof (game_t));
+  game->board = NULL;
+  game->n_gems = 0;
+  game->gems = NULL;
   game->frame = 0;
   game->screen = screen;
   game->state = SPLASH_STATE;
@@ -86,6 +89,18 @@ game_loop (game_t *game)
       usleep (1000000 / game->fps);
     }
   ++game->frame;
+}
+
+void
+game_add_gem (game_t *game, gem_t *gem)
+{
+  ++game->n_gems;
+  game->gems = (gem_t**)realloc (game->gems, sizeof (gem_t*) * game->n_gems);
+  game->gems[game->n_gems - 1] = gem;
+
+  int x = gem->x / 24;
+  int y = gem->y / 24;
+  game->board[x][y] = game->n_gem_types * gem->level + gem->type;
 }
 
 bool

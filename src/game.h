@@ -7,6 +7,15 @@
 
 typedef enum { SPLASH_STATE, MENU_STATE, SESSION_STATE, QUIT_STATE } state_t;
 
+typedef struct gem_s gem_t;
+
+struct gem_s {
+  int x;
+  int y;
+  int type;
+  int level;
+};
+
 typedef struct game_s game_t;
 struct game_s {
   state_t state;
@@ -25,6 +34,8 @@ struct game_s {
   int n_gem_types;
   int **board;
   int fps;
+  int n_gems;
+  gem_t **gems;
 };
 
 game_t *game_create ();
@@ -32,6 +43,8 @@ bool game_key_pressed (game_t *game, SDLKey key);
 bool game_key_released (game_t *game, SDLKey key);
 void game_loop (game_t *game);
 void game_destroy ();
+
+void game_add_gem (game_t *game, gem_t *gem);
 
 void game_start (game_t *game);
 void game_quit (game_t *game);
