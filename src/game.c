@@ -123,6 +123,25 @@ game_move_gem (game_t *game, int x, int y, int gem_x, int gem_y)
     }
 }
 
+void
+game_remove_gem (game_t *game, int x, int y)
+{
+  int i;
+  for (i = 0; i < game->n_gems; ++i)
+    {
+      gem_t *gem = game->gems[i];
+      if (gem->x / 24 == x && gem->y / 24 == y)
+        {
+          game->board[x][y] = -1;
+          free (game->gems[i]);
+          game->gems[i] = game->gems[game->n_gems - 1];
+          --game->n_gems;
+          game->gems = (gem_t**)realloc (game->gems, sizeof (gem_t*) * game->n_gems);
+          break;
+        }
+    }
+}
+
 bool
 game_key_pressed (game_t *game, SDLKey key)
 {

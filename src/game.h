@@ -46,6 +46,7 @@ void game_destroy ();
 
 void game_add_gem (game_t *game, gem_t *gem);
 void game_move_gem (game_t *game, int x, int y, int gem_x, int gem_y);
+void game_remove_gem (game_t *game, int x, int y);
 
 void game_start (game_t *game);
 void game_quit (game_t *game);

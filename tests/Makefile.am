@@ -30,7 +30,8 @@ TESTS = \
  move-locked-cursor \
  checkerboard-corners \
  add-gem \
- move-gem
+ move-gem \
+ remove-gem
 
 GAME_SOURCES = \
  test.c \
@@ -69,5 +70,6 @@ move_locked_cursor_SOURCES = move-locked-cursor.c $(GAME_SOURCES)
 checkerboard_corners_SOURCES = checkerboard-corners.c $(GAME_SOURCES)
 add_gem_SOURCES = add-gem.c $(GAME_SOURCES)
 move_gem_SOURCES = move-gem.c $(GAME_SOURCES)
+remove_gem_SOURCES = remove-gem.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)
