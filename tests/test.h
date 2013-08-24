@@ -20,5 +20,6 @@
 int **copy_board (game_t *game);
 void setup_board_every_gem_different (game_t *game);
 void wait (game_t *game, int frames);
+void replace_gem (game_t *game, int x, int y, int val);
 
 #endif

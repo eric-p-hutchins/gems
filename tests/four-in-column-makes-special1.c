@@ -15,13 +15,7 @@ main (int argc, char *argv[])
 
   int i;
   int j;
-  for (i = 0; i < m; ++i)
-    {
-      for (j = 0; j < n; ++j)
-        {
-          game->board[i][j] = j * m + i;
-        }
-    }
+  setup_board_every_gem_different (game);
 
   int **old_board = (int**)malloc (sizeof (int*) * m);
   for (i = 0; i < m; ++i)
@@ -35,15 +29,15 @@ main (int argc, char *argv[])
 
   game->n_gem_types = 1000000;
 
-  game->board[0][n-1] = 999999;
-  game->board[0][n-2] = 999999;
-  game->board[0][n-3] = 999999;
-  game->board[0][n-4] = 999999;
+  replace_gem (game, 0, n-1, 999999);
+  replace_gem (game, 0, n-2, 999999);
+  replace_gem (game, 0, n-3, 999999);
+  replace_gem (game, 0, n-4, 999999);
 
-  game->board[m-1][n-1] = 999999;
-  game->board[m-1][n-2] = 999999;
-  game->board[m-1][n-3] = 999999;
-  game->board[m-1][n-4] = 999999;
+  replace_gem (game, m-1, n-1, 999999);
+  replace_gem (game, m-1, n-2, 999999);
+  replace_gem (game, m-1, n-3, 999999);
+  replace_gem (game, m-1, n-4, 999999);
 
   bool old_ones_dropped_1 = false;
   bool old_ones_dropped_2 = false;

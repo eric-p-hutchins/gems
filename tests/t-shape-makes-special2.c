@@ -26,11 +26,11 @@ main (int argc, char *argv[])
   setup_board_every_gem_different (game);
   int **old_board = copy_board (game);
 
-  game->board[1][1] = 999999;
-  game->board[2][1] = 999999;
-  game->board[3][1] = 999999;
-  game->board[2][2] = 999999;
-  game->board[2][3] = 999999;
+  replace_gem (game, 1, 1, 999999);
+  replace_gem (game, 2, 1, 999999);
+  replace_gem (game, 3, 1, 999999);
+  replace_gem (game, 2, 2, 999999);
+  replace_gem (game, 2, 3, 999999);
 
   bool old_ones_dropped = false;
   bool special_created = false;
@@ -70,11 +70,11 @@ main (int argc, char *argv[])
   setup_board_every_gem_different (game);
   old_board = copy_board (game);
 
-  game->board[1][1] = 999999;
-  game->board[1][2] = 999999;
-  game->board[1][3] = 999999;
-  game->board[2][2] = 999999;
-  game->board[3][2] = 999999;
+  replace_gem (game, 1, 1, 999999);
+  replace_gem (game, 1, 2, 999999);
+  replace_gem (game, 1, 3, 999999);
+  replace_gem (game, 2, 2, 999999);
+  replace_gem (game, 3, 2, 999999);
 
   old_ones_dropped = false;
   special_created = false;
@@ -116,11 +116,11 @@ main (int argc, char *argv[])
   setup_board_every_gem_different (game);
   old_board = copy_board (game);
 
-  game->board[1][3] = 999999;
-  game->board[2][3] = 999999;
-  game->board[3][3] = 999999;
-  game->board[2][2] = 999999;
-  game->board[2][1] = 999999;
+  replace_gem (game, 1, 3, 999999);
+  replace_gem (game, 2, 3, 999999);
+  replace_gem (game, 3, 3, 999999);
+  replace_gem (game, 2, 2, 999999);
+  replace_gem (game, 2, 1, 999999);
 
   old_ones_dropped = false;
   special_created = false;
@@ -165,11 +165,11 @@ main (int argc, char *argv[])
   setup_board_every_gem_different (game);
   old_board = copy_board (game);
 
-  game->board[1][2] = 999999;
-  game->board[2][2] = 999999;
-  game->board[3][1] = 999999;
-  game->board[3][2] = 999999;
-  game->board[3][3] = 999999;
+  replace_gem (game, 1, 2, 999999);
+  replace_gem (game, 2, 2, 999999);
+  replace_gem (game, 3, 1, 999999);
+  replace_gem (game, 3, 2, 999999);
+  replace_gem (game, 3, 3, 999999);
 
   old_ones_dropped = false;
   special_created = false;

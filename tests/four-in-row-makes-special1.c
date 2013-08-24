@@ -16,13 +16,7 @@ main (int argc, char *argv[])
   int i;
   int j;
   int k;
-  for (i = 0; i < m; ++i)
-    {
-      for (j = 0; j < n; ++j)
-        {
-          game->board[i][j] = j * m + i;
-        }
-    }
+  setup_board_every_gem_different (game);
 
   int **old_board = (int**)malloc (sizeof (int*) * m);
   for (i = 0; i < m; ++i)

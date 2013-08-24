@@ -91,6 +91,17 @@ game_loop (game_t *game)
   ++game->frame;
 }
 
+gem_t *
+gem_create (int x, int y, int type, int level)
+{
+  gem_t *gem = (gem_t*)malloc (sizeof (gem_t));
+  gem->x = x;
+  gem->y = y;
+  gem->type = type;
+  gem->level = level;
+  return gem;
+}
+
 void
 game_add_gem (game_t *game, gem_t *gem)
 {
