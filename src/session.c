@@ -181,6 +181,10 @@ handle_t_shape (game_t *game)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
+          if (game->board[j][i] < 0)
+            {
+              continue;
+            }
           if (j >= 1 && j < game->n_cols - 1
               && i < game->n_rows - 2
               && game->board[j][i] == game->board[j-1][i]
@@ -253,6 +257,10 @@ handle_l_shape (game_t *game)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
+          if (game->board[j][i] < 0)
+            {
+              continue;
+            }
           if (j < game->n_cols - 2 && i < game->n_rows - 2
               && game->board[j][i] == game->board[j+1][i]
               && game->board[j][i] == game->board[j+2][i]
@@ -321,6 +329,10 @@ handle_three_in_row_or_column (game_t *game)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
+          if (game->board[j][i] < 0)
+            {
+              continue;
+            }
           if (i >= 2
               && game->board[j][i] == game->board[j][i-1]
               && game->board[j][i] == game->board[j][i-2])
@@ -349,6 +361,10 @@ handle_four_in_row_or_column (game_t *game)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
+          if (game->board[j][i] < 0)
+            {
+              continue;
+            }
           if (i >= 3
               && game->board[j][i] == game->board[j][i-1]
               && game->board[j][i] == game->board[j][i-2]
@@ -385,6 +401,10 @@ handle_five_in_row_or_column (game_t *game)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
+          if (game->board[j][i] < 0)
+            {
+              continue;
+            }
           if (i >= 4
               && game->board[j][i] == game->board[j][i-1]
               && game->board[j][i] == game->board[j][i-2]
@@ -442,7 +462,7 @@ drop_columns_to_fill_holes (game_t *game)
                     }
                   game_move_gem (game, i, k - 1, x, y + 1);
                 }
-              if (game->board[i][0] == -1)
+              if (game->board[i][0] < 0)
                 {
                   int type = rand () % game->n_gem_types;
                   game_add_gem (game, gem_create (i * 24, 0, type, 0));
