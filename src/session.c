@@ -69,9 +69,7 @@ session_handle_keys (game_t *game)
             {
               if (session_legal_move (game, x, y, x - 1, y))
                 {
-                  int val = game->board[x][y];
-                  game->board[x][y] = game->board[x-1][y];
-                  game->board[x-1][y] = val;
+                  game_swap_gems (game, x, y, x-1, y);
                   --game->board_cursor_x;
                   game->cursor_locked = false;
                 }
@@ -93,9 +91,7 @@ session_handle_keys (game_t *game)
             {
               if (session_legal_move (game, x, y, x + 1, y))
                 {
-                  int val = game->board[x][y];
-                  game->board[x][y] = game->board[x+1][y];
-                  game->board[x+1][y] = val;
+                  game_swap_gems (game, x, y, x+1, y);
                   ++game->board_cursor_x;
                   game->cursor_locked = false;
                 }
@@ -117,9 +113,7 @@ session_handle_keys (game_t *game)
             {
               if (session_legal_move (game, x, y, x, y - 1))
                 {
-                  int val = game->board[x][y];
-                  game->board[x][y] = game->board[x][y-1];
-                  game->board[x][y-1] = val;
+                  game_swap_gems (game, x, y, x, y-1);
                   --game->board_cursor_y;
                   game->cursor_locked = false;
                 }
@@ -141,9 +135,7 @@ session_handle_keys (game_t *game)
             {
               if (session_legal_move (game, x, y, x, y + 1))
                 {
-                  int val = game->board[x][y];
-                  game->board[x][y] = game->board[x][y+1];
-                  game->board[x][y+1] = val;
+                  game_swap_gems (game, x, y, x, y+1);
                   ++game->board_cursor_y;
                   game->cursor_locked = false;
                 }

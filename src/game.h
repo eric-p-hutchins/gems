@@ -49,6 +49,7 @@ gem_t *gem_create (int x, int y, int type, int level);
 void game_add_gem (game_t *game, gem_t *gem);
 void game_move_gem (game_t *game, int x, int y, int gem_x, int gem_y);
 void game_remove_gem (game_t *game, int x, int y);
+void game_swap_gems (game_t *game, int x1, int y1, int x2, int y2);
 
 void game_start (game_t *game);
 void game_quit (game_t *game);

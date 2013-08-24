@@ -153,6 +153,35 @@ game_remove_gem (game_t *game, int x, int y)
     }
 }
 
+void
+game_swap_gems (game_t *game, int x1, int y1, int x2, int y2)
+{
+  gem_t *gem1 = NULL;
+  gem_t *gem2 = NULL;
+  int i;
+  for (i = 0; i < game->n_gems; ++i)
+    {
+      gem_t *gem = game->gems[i];
+      if (gem->x / 24 == x1 && gem->y / 24 == y1)
+        {
+          gem1 = gem;
+        }
+      else if (gem->x / 24 == x2 && gem->y / 24 == y2)
+        {
+          gem2 = gem;
+        }
+    }
+  int val1 = game->board[x1][y1];
+  int gemx1 = gem1->x;
+  int gemy1 = gem1->y;
+  gem1->x = gem2->x;
+  gem1->y = gem2->y;
+  gem2->x = gemx1;
+  gem2->y = gemy1;
+  game->board[x1][y1] = game->board[x2][y2];
+  game->board[x2][y2] = val1;
+}
+
 bool
 game_key_pressed (game_t *game, SDLKey key)
 {
