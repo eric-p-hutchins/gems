@@ -103,6 +103,26 @@ game_add_gem (game_t *game, gem_t *gem)
   game->board[x][y] = game->n_gem_types * gem->level + gem->type;
 }
 
+void
+game_move_gem (game_t *game, int x, int y, int gem_x, int gem_y)
+{
+  int bx = gem_x / 24;
+  int by = gem_y / 24;
+  int i;
+  for (i = 0; i < game->n_gems; ++i)
+    {
+      gem_t *gem = game->gems[i];
+      if (gem->x / 24 == x && gem->y / 24 == y)
+        {
+          game->board[x][y] = -1;
+          gem->x = gem_x;
+          gem->y = gem_y;
+          game->board[bx][by] = game->n_gem_types * gem->level + gem->type;
+          break;
+        }
+    }
+}
+
 bool
 game_key_pressed (game_t *game, SDLKey key)
 {
