@@ -4,6 +4,9 @@
 void
 splash_loop (game_t *game)
 {
+  Uint32 gray = SDL_MapRGB (game->screen->format, 64, 64, 80);
+  SDL_FillRect (game->screen, NULL, gray);
+  SDL_Flip (game->screen);
   if (game->frame >= 100)
     {
       game->state = MENU_STATE;

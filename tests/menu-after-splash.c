@@ -23,8 +23,8 @@ main (int argc, char *argv[])
   fail_if (game->menu_cursor != 0);
 
   press_key_and_loop (game, SDLK_RETURN);
-  fail_if (game->state != SESSION_STATE);
   release_key_and_loop (game, SDLK_RETURN);
+  fail_if (game->state != SESSION_STATE);
 
   game->state = MENU_STATE;
   game->n_menu_items = 2;
@@ -34,8 +34,8 @@ main (int argc, char *argv[])
   release_key_and_loop (game, SDLK_DOWN);
 
   press_key_and_loop (game, SDLK_RETURN);
-  fail_if (game->state != QUIT_STATE);
   release_key_and_loop (game, SDLK_RETURN);
+  fail_if (game->state != QUIT_STATE);
 
   game_destroy (game);
   return 0;

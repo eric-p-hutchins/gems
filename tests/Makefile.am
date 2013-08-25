@@ -1,4 +1,5 @@
 AM_CPPFLAGS = -I../src
+AM_CPPFLAGS+=-DBUILD_DIR="\"$(abs_top_builddir)\"" -DPKG_DATA_DIR="\"$(pkgdatadir)\""
 
 TESTS = \
  loop-exists \

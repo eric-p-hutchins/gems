@@ -41,30 +41,30 @@ main (int argc, char *argv[])
   release_key_and_loop (game, SDLK_DOWN);
 
   press_key_and_loop (game, SDLK_RETURN);
-  fail_if (a != 1);
   release_key_and_loop (game, SDLK_RETURN);
+  fail_if (a != 1);
 
   press_key_and_loop (game, SDLK_UP);
-  fail_if (game->menu_cursor != 0);
   release_key_and_loop (game, SDLK_UP);
+  fail_if (game->menu_cursor != 0);
 
   press_key_and_loop (game, SDLK_RETURN);
-  fail_if (game->state != SESSION_STATE);
   release_key_and_loop (game, SDLK_RETURN);
+  fail_if (game->state != SESSION_STATE);
 
   game->state = MENU_STATE;
 
   press_key_and_loop (game, SDLK_DOWN);
-  fail_if (game->menu_cursor != 1);
   release_key_and_loop (game, SDLK_DOWN);
+  fail_if (game->menu_cursor != 1);
 
   press_key_and_loop (game, SDLK_DOWN);
-  fail_if (game->menu_cursor != 2);
   release_key_and_loop (game, SDLK_DOWN);
+  fail_if (game->menu_cursor != 2);
 
   press_key_and_loop (game, SDLK_RETURN);
-  fail_if (game->state != QUIT_STATE);
   release_key_and_loop (game, SDLK_RETURN);
+  fail_if (game->state != QUIT_STATE);
 
   game_destroy (game);
   return 0;

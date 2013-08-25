@@ -26,6 +26,7 @@ struct game_s {
   int n_menu_items;
   int menu_cursor;
   void (**menu_functions)(game_t*);
+  bool menu_held_down;
   int n_cols;
   int n_rows;
   int board_cursor_x;
@@ -36,6 +37,9 @@ struct game_s {
   int fps;
   int n_gems;
   gem_t **gems;
+  SDL_Surface *sprite;
+  SDL_Surface *frame_sprite;
+  SDL_Surface *button_sprite;
 };
 
 game_t *game_create ();

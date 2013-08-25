@@ -507,9 +507,13 @@ session_draw_gem (game_t *game, gem_t *gem)
       break;
     }
   Uint32 color = SDL_MapRGB (game->screen->format, r, g, b);
-  SDL_FillRect (game->screen, &s, color);
+
+  SDL_Rect src = { 320 + gem->type * 32 + 4, 132, 24, 24 };
+  SDL_Rect d = { s.x, s.y, 0, 0 };
+  SDL_BlitSurface (game->sprite, &src, game->screen, &d);
+
   int k;
-  for (k = 0; k < level + 1; ++k)
+  for (k = 1; k < level + 1; ++k)
     {
       SDL_Rect outline_rect;
       outline_rect.x = s.x + k * 2;
@@ -548,11 +552,103 @@ session_draw (game_t *game)
   rect.h = board_h + 2;
   rect.x = board_x - 1;
   rect.y = board_y - 1;
-  Uint32 gray = SDL_MapRGB (game->screen->format, 192, 192, 192);
+  Uint32 dark_gray = SDL_MapRGB (game->screen->format, 64, 64, 80);
   Uint32 black = SDL_MapRGB (game->screen->format, 0, 0, 0);
   Uint32 white = SDL_MapRGB (game->screen->format, 255, 255, 255);
-  SDL_FillRect (game->screen, NULL, white);
-  SDL_FillRect (game->screen, &rect, black);
+  SDL_FillRect (game->screen, NULL, dark_gray);
+
+  SDL_Rect framer = { 0, 0, 48, 12 };
+  SDL_Rect framed = { board_x - 12, board_y - 12, 0, 0 };
+  SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+  framer.x = 33;
+  framer.y = 0;
+  framer.w = 12;
+  framer.h = 12;
+  framed.x = board_x + 36;
+  framed.y = board_y - 12;
+  SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+  framer.x = 6;
+  framer.y = 54;
+  framer.w = 12;
+  framer.h = 12;
+  framed.x = board_x + board_w - 48;
+  framed.y = board_y + board_h;
+  SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+  framer.x = 18;
+  framer.y = 54;
+  framer.w = 48;
+  framer.h = 12;
+  framed.x = board_x + board_w - 36;
+  framed.y = board_y + board_h;
+  SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+
+  framer.x = 0;
+  framer.y = 54;
+  framer.w = 12;
+  framer.h = 12;
+  framed.x = board_x - 12;
+  framed.y = board_y + board_h;
+  SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+
+  framer.x = 54;
+  framer.y = 0;
+  framer.w = 12;
+  framer.h = 12;
+  framed.x = board_x + board_w;
+  framed.y = board_y - 12;
+  SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+
+  int i, j;
+  for (i = 0; i < game->n_cols; ++i)
+    {
+      if (i > 1)
+        {
+          framer.x = 33;
+          framer.y = 0;
+          framer.w = 24;
+          framer.h = 12;
+          framed.x = board_x + 24 * i;
+          framed.y = board_y - 12;
+          SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+        }
+      if (i < game->n_cols - 2)
+        {
+          framer.x = 6;
+          framer.y = 54;
+          framer.w = 24;
+          framer.h = 12;
+          framed.x = board_x + 24 * i;
+          framed.y = board_y + board_h;
+          SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+        }
+      for (j = 0; j < game->n_rows; ++j)
+        {
+          framer.x = 12;
+          framer.y = 12;
+          framer.w = 24;
+          framer.h = 24;
+          framed.x = board_x + 24 * i;
+          framed.y = board_y + 24 * j;
+          SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+        }
+    }
+  for (j = 0; j < game->n_rows; ++j)
+    {
+      framer.x = 0;
+      framer.y = 12;
+      framer.w = 12;
+      framer.h = 24;
+      framed.x = board_x - 12;
+      framed.y = board_y + 24 * j;
+      SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+      framer.x = 54;
+      framer.y = 12;
+      framer.w = 12;
+      framer.h = 24;
+      framed.x = board_x + board_w;
+      framed.y = board_y + 24 * j;
+      SDL_BlitSurface (game->frame_sprite, &framer, game->screen, &framed);
+    }
   int k;
   for (k = 0; k < game->n_gems; ++k)
     {

@@ -16,4 +16,7 @@ AM_PATH_SDL(1.2.0,
             CPPFLAGS="$CPPFLAGS $SDL_CFLAGS" LIBS="$LIBS $SDL_LIBS",
             AC_MSG_ERROR([SDL not found]))
 
+AC_CHECK_LIB([SDL_image],[IMG_Load],[LIBS="$LIBS -lSDL_image"],
+             AC_MSG_ERROR([SDL_image not found]))
+
 AC_OUTPUT

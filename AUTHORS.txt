@@ -1,0 +1,21 @@
+Code authors
+============
+
+This program was written by the following people:
+ - Eric P. Hutchins
+
+
+Asset attribution
+=================
+
+Assets were authored by the following people:
+
+Joshua Taylor
+ - gems.png
+
+caeles
+ - modifications to gems.png which removed the shadows
+
+Daniel Eddeland
+ - buttons.png
+ - slot.png

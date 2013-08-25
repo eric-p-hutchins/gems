@@ -5,7 +5,29 @@
 #include "menu.h"
 #include "session.h"
 
+#include "SDL_image.h"
+
 int N_KEYS = 512;
+
+SDL_Surface *
+game_load_image (const char *filename)
+{
+  char *sprite_path = (char*)malloc (1 + strlen (filename) + strlen (BUILD_DIR) + 1);
+  strcpy (sprite_path, BUILD_DIR);
+  strcat (sprite_path, "/");
+  strcat (sprite_path, filename);
+  SDL_Surface *img = IMG_Load (sprite_path);
+  if (img == NULL)
+    {
+      free (sprite_path);
+      sprite_path = (char*)malloc (1 + strlen (filename) + strlen (PKG_DATA_DIR) + 1);
+      strcpy (sprite_path, PKG_DATA_DIR);
+      strcat (sprite_path, "/");
+      strcat (sprite_path, filename);
+      img = IMG_Load (sprite_path);
+    }
+  return img;
+}
 
 game_t *
 game_create ()
@@ -27,6 +49,11 @@ game_create ()
   game->prev_key_states = (bool*)malloc (sizeof (bool) * N_KEYS);
   memset (game->prev_key_states, false, N_KEYS);
   game->cursor_locked = false;
+  game->sprite = game_load_image ("gems.png");
+  game->frame_sprite = game_load_image ("slot.png");
+  game->button_sprite = game_load_image ("buttons.png");
+  game->menu_held_down = false;
+  game->menu_cursor = 0;
   return game;
 }
 

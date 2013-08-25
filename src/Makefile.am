@@ -6,3 +6,5 @@ gems_SOURCES = \
  splash.c \
  menu.c \
  session.c
+
+AM_CPPFLAGS=-DBUILD_DIR="\"$(abs_top_builddir)\"" -DPKG_DATA_DIR="\"$(pkgdatadir)\""
