@@ -69,6 +69,7 @@ game_destroy (game_t *game)
 void
 game_loop (game_t *game)
 {
+  Uint32 frame_begin = SDL_GetTicks ();
   SDL_Event event;
   while (SDL_PollEvent (&event))
     {
@@ -113,7 +114,13 @@ game_loop (game_t *game)
     }
   if (game->fps > 0)
     {
-      usleep (1000000 / game->fps);
+      Uint32 frame_end = SDL_GetTicks ();
+      Uint32 elapsed = frame_end - frame_begin;
+      if (elapsed < 1000 / game->fps)
+        {
+          Uint32 wait_time = 1000 / game->fps - elapsed;
+          SDL_Delay (wait_time);
+        }
     }
   ++game->frame;
 }
