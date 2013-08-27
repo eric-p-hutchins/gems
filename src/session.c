@@ -165,6 +165,12 @@ gem_level (game_t *game, int x, int y)
   return game->board[x][y] / game->n_gem_types;
 }
 
+int
+gem_type (game_t *game, int x, int y)
+{
+  return game->board[x][y] % game->n_gem_types;
+}
+
 void
 replace_with_hole (game_t *game, int x, int y)
 {
@@ -334,16 +340,16 @@ handle_three_in_row_or_column (game_t *game)
               continue;
             }
           if (i >= 2
-              && game->board[j][i] == game->board[j][i-1]
-              && game->board[j][i] == game->board[j][i-2])
+              && gem_type (game, j, i) == gem_type (game, j, i - 1)
+              && gem_type (game, j, i) == gem_type (game, j, i - 2))
             {
               replace_with_hole (game, j, i);
               replace_with_hole (game, j, i-1);
               replace_with_hole (game, j, i-2);
             }
           else if (j < game->n_cols - 2
-                   && game->board[j][i] == game->board[j+1][i]
-                   && game->board[j][i] == game->board[j+2][i])
+                   && gem_type (game, j, i) == gem_type (game, j + 1, i)
+                   && gem_type (game, j, i) == gem_type (game, j + 2, i))
             {
               replace_with_hole (game, j, i);
               replace_with_hole (game, j+1, i);
@@ -681,6 +687,43 @@ session_draw (game_t *game)
 }
 
 void
+handle_special1_gem (game_t *game, int x, int y)
+{
+  int i;
+  for (i = 0; i < game->n_cols; ++i)
+    {
+      replace_with_hole (game, i, y);
+    }
+  for (i = 0; i < game->n_rows; ++i)
+    {
+      replace_with_hole (game, x, i);
+    }
+}
+
+void
+handle_special1_gems (game_t *game)
+{
+  int i, j;
+  for (i = 0; i < game->n_rows; ++i)
+    {
+      for (j = 0; j < game->n_cols; ++j)
+        {
+          if (game->board[j][i] == -2)
+            {
+              printf ("handling special1 at %d, %d\n", j, i);
+              handle_special1_gem (game, j, i);
+            }
+        }
+    }
+}
+
+void
+handle_special_gems (game_t *game)
+{
+  handle_special1_gems (game);
+}
+
+void
 session_loop (game_t *game)
 {
   session_handle_keys (game);
@@ -689,6 +732,7 @@ session_loop (game_t *game)
   handle_l_shape (game);
   handle_four_in_row_or_column (game);
   handle_three_in_row_or_column (game);
+  handle_special_gems (game);
   drop_columns_to_fill_holes (game);
   session_draw (game);
 }

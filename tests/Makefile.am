@@ -33,7 +33,8 @@ TESTS = \
  add-gem \
  move-gem \
  remove-gem \
- swap-gems
+ swap-gems \
+ special1-match
 
 GAME_SOURCES = \
  test.c \
@@ -74,5 +75,6 @@ add_gem_SOURCES = add-gem.c $(GAME_SOURCES)
 move_gem_SOURCES = move-gem.c $(GAME_SOURCES)
 remove_gem_SOURCES = remove-gem.c $(GAME_SOURCES)
 swap_gems_SOURCES = swap-gems.c $(GAME_SOURCES)
+special1_match_SOURCES = special1-match.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)
