@@ -710,7 +710,6 @@ handle_special1_gems (game_t *game)
         {
           if (game->board[j][i] == -2)
             {
-              printf ("handling special1 at %d, %d\n", j, i);
               handle_special1_gem (game, j, i);
             }
         }
