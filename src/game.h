@@ -37,6 +37,7 @@ struct game_s {
   int fps;
   int n_gems;
   gem_t **gems;
+  bool *column_settled;
   SDL_Surface *sprite;
   SDL_Surface *frame_sprite;
   SDL_Surface *button_sprite;

@@ -18,6 +18,7 @@ TESTS = \
  menu-enter-triggers \
  menu-after-splash \
  session-starts-with-no-matches \
+ replace-gems \
  three-in-column-drops-new-ones \
  three-in-row-drops-new-ones \
  four-in-column-makes-special1 \
@@ -34,7 +35,8 @@ TESTS = \
  move-gem \
  remove-gem \
  swap-gems \
- special1-match
+ special1-match \
+ matches-only-happen-when-settled
 
 GAME_SOURCES = \
  test.c \
@@ -59,6 +61,7 @@ menu_selection_SOURCES = menu-selection.c $(GAME_SOURCES)
 menu_enter_triggers_SOURCES = menu-enter-triggers.c $(GAME_SOURCES)
 menu_after_splash_SOURCES = menu-after-splash.c $(GAME_SOURCES)
 session_starts_with_no_matches_SOURCES = session-starts-with-no-matches.c $(GAME_SOURCES)
+replace_gems_SOURCES = replace-gems.c $(GAME_SOURCES)
 three_in_column_drops_new_ones_SOURCES = three-in-column-drops-new-ones.c $(GAME_SOURCES)
 three_in_row_drops_new_ones_SOURCES = three-in-row-drops-new-ones.c $(GAME_SOURCES)
 four_in_column_makes_special1_SOURCES = four-in-column-makes-special1.c $(GAME_SOURCES)
@@ -76,5 +79,6 @@ move_gem_SOURCES = move-gem.c $(GAME_SOURCES)
 remove_gem_SOURCES = remove-gem.c $(GAME_SOURCES)
 swap_gems_SOURCES = swap-gems.c $(GAME_SOURCES)
 special1_match_SOURCES = special1-match.c $(GAME_SOURCES)
+matches_only_happen_when_settled_SOURCES = matches-only-happen-when-settled.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)

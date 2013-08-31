@@ -12,6 +12,7 @@ session_start (game_t *game)
   game->n_rows = 8;
   game->n_cols = 8;
   game->n_gem_types = 4;
+  game->column_settled = (bool*)malloc (sizeof (bool) * game->n_cols);
   game->board = (int**)malloc (sizeof (int*) * game->n_cols);
   int i;
   for (i = 0; i < game->n_cols; ++i)
@@ -192,6 +193,9 @@ handle_t_shape (game_t *game)
               continue;
             }
           if (j >= 1 && j < game->n_cols - 1
+              && game->column_settled[j-1]
+              && game->column_settled[j]
+              && game->column_settled[j+1]
               && i < game->n_rows - 2
               && game->board[j][i] == game->board[j-1][i]
               && game->board[j][i] == game->board[j+1][i]
@@ -207,6 +211,9 @@ handle_t_shape (game_t *game)
               replace_with_hole (game, j, i+2);
             }
           else if (i >= 1 && i < game->n_rows - 1
+                   && game->column_settled[j]
+                   && game->column_settled[j+1]
+                   && game->column_settled[j+2]
                    && j < game->n_cols - 2
                    && game->board[j][i] == game->board[j][i-1]
                    && game->board[j][i] == game->board[j][i+1]
@@ -223,6 +230,9 @@ handle_t_shape (game_t *game)
             }
           else if (j >= 1 && j < game->n_cols - 1
                    && i > 1
+                   && game->column_settled[j-1]
+                   && game->column_settled[j]
+                   && game->column_settled[j+1]
                    && game->board[j][i] == game->board[j-1][i]
                    && game->board[j][i] == game->board[j+1][i]
                    && game->board[j][i] == game->board[j][i-1]
@@ -238,6 +248,9 @@ handle_t_shape (game_t *game)
             }
           else if (i >= 1 && i < game->n_rows - 1
                    && j > 1
+                   && game->column_settled[j]
+                   && game->column_settled[j-1]
+                   && game->column_settled[j-2]
                    && game->board[j][i] == game->board[j][i-1]
                    && game->board[j][i] == game->board[j][i+1]
                    && game->board[j][i] == game->board[j-1][i]
@@ -268,6 +281,9 @@ handle_l_shape (game_t *game)
               continue;
             }
           if (j < game->n_cols - 2 && i < game->n_rows - 2
+              && game->column_settled[j]
+              && game->column_settled[j+1]
+              && game->column_settled[j+2]
               && game->board[j][i] == game->board[j+1][i]
               && game->board[j][i] == game->board[j+2][i]
               && game->board[j][i] == game->board[j][i+1]
@@ -282,6 +298,9 @@ handle_l_shape (game_t *game)
               replace_with_hole (game, j, i+2);
             }
           else if (i >= 2 && j < game->n_cols - 2
+                   && game->column_settled[j]
+                   && game->column_settled[j+1]
+                   && game->column_settled[j+2]
                    && game->board[j][i] == game->board[j][i-1]
                    && game->board[j][i] == game->board[j][i-2]
                    && game->board[j][i] == game->board[j+1][i]
@@ -296,6 +315,9 @@ handle_l_shape (game_t *game)
               replace_with_hole (game, j+2, i);
             }
           else if (j >= 2 && i >= 2
+                   && game->column_settled[j]
+                   && game->column_settled[j-1]
+                   && game->column_settled[j-2]
                    && game->board[j][i] == game->board[j-1][i]
                    && game->board[j][i] == game->board[j-2][i]
                    && game->board[j][i] == game->board[j][i-1]
@@ -310,6 +332,9 @@ handle_l_shape (game_t *game)
               replace_with_hole (game, j, i-2);
             }
           else if (j >= 2 && i < game->n_rows - 2
+                   && game->column_settled[j]
+                   && game->column_settled[j-1]
+                   && game->column_settled[j-2]
                    && game->board[j][i] == game->board[j][i+1]
                    && game->board[j][i] == game->board[j][i+2]
                    && game->board[j][i] == game->board[j-1][i]
@@ -327,6 +352,20 @@ handle_l_shape (game_t *game)
     }
 }
 
+bool
+column_settled (game_t *game, int x)
+{
+  int i;
+  for (i = 0; i < game->n_rows; ++i)
+    {
+      if (game->board[x][i] < 0)
+        {
+          return false;
+        }
+    }
+  return true;
+}
+
 void
 handle_three_in_row_or_column (game_t *game)
 {
@@ -340,6 +379,7 @@ handle_three_in_row_or_column (game_t *game)
               continue;
             }
           if (i >= 2
+              && game->column_settled[j]
               && gem_type (game, j, i) == gem_type (game, j, i - 1)
               && gem_type (game, j, i) == gem_type (game, j, i - 2))
             {
@@ -348,6 +388,9 @@ handle_three_in_row_or_column (game_t *game)
               replace_with_hole (game, j, i-2);
             }
           else if (j < game->n_cols - 2
+                   && game->column_settled[j]
+                   && game->column_settled[j+1]
+                   && game->column_settled[j+2]
                    && gem_type (game, j, i) == gem_type (game, j + 1, i)
                    && gem_type (game, j, i) == gem_type (game, j + 2, i))
             {
@@ -372,6 +415,7 @@ handle_four_in_row_or_column (game_t *game)
               continue;
             }
           if (i >= 3
+              && game->column_settled[j]
               && game->board[j][i] == game->board[j][i-1]
               && game->board[j][i] == game->board[j][i-2]
               && game->board[j][i] == game->board[j][i-3])
@@ -384,6 +428,10 @@ handle_four_in_row_or_column (game_t *game)
               replace_with_hole (game, j, i-3);
             }
           else if (j < game->n_cols - 3
+                   && game->column_settled[j]
+                   && game->column_settled[j+1]
+                   && game->column_settled[j+2]
+                   && game->column_settled[j+3]
                    && game->board[j][i] == game->board[j+1][i]
                    && game->board[j][i] == game->board[j+2][i]
                    && game->board[j][i] == game->board[j+3][i])
@@ -412,6 +460,7 @@ handle_five_in_row_or_column (game_t *game)
               continue;
             }
           if (i >= 4
+              && game->column_settled[j]
               && game->board[j][i] == game->board[j][i-1]
               && game->board[j][i] == game->board[j][i-2]
               && game->board[j][i] == game->board[j][i-3]
@@ -426,6 +475,11 @@ handle_five_in_row_or_column (game_t *game)
               replace_with_hole (game, j, i-4);
             }
           else if (j < game->n_cols - 4
+                   && game->column_settled[j]
+                   && game->column_settled[j+1]
+                   && game->column_settled[j+2]
+                   && game->column_settled[j+3]
+                   && game->column_settled[j+4]
                    && game->board[j][i] == game->board[j+1][i]
                    && game->board[j][i] == game->board[j+2][i]
                    && game->board[j][i] == game->board[j+3][i]
@@ -723,8 +777,19 @@ handle_special_gems (game_t *game)
 }
 
 void
+update_columns_settled (game_t *game)
+{
+  int i;
+  for (i = 0; i < game->n_cols; ++i)
+    {
+      game->column_settled[i] = column_settled (game, i);
+    }
+}
+
+void
 session_loop (game_t *game)
 {
+  update_columns_settled (game);
   session_handle_keys (game);
   handle_five_in_row_or_column (game);
   handle_t_shape (game);

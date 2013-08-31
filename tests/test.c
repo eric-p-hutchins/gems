@@ -67,3 +67,63 @@ replace_gem (game_t *game, int x, int y, int val)
   gem->level = val / game->n_gem_types;
   game_add_gem (game, gem);
 }
+
+void
+replace_gems (game_t *game, char *pattern)
+{
+  if (pattern[0] == '\n')
+    {
+      pattern = pattern + 1;
+    }
+  int row = 0;
+  int col = 0;
+  int i;
+  for (i = 0; i < strlen (pattern) + 1; ++i)
+    {
+      switch (pattern[i])
+        {
+        case ' ':
+          break;
+        case 'O':
+          game_remove_gem (game, col, row);
+          game->board[col][row] = -1;
+          break;
+        case '@':
+          replace_gem (game, col, row, 999991);
+          break;
+        case '#':
+          replace_gem (game, col, row, 999992);
+          break;
+        case '$':
+          replace_gem (game, col, row, 999993);
+          break;
+        case '%':
+          replace_gem (game, col, row, 999994);
+          break;
+        case '&':
+          replace_gem (game, col, row, 999995);
+          break;
+        case '*':
+          replace_gem (game, col, row, 999996);
+          break;
+        case '?':
+          replace_gem (game, col, row, 999997);
+          break;
+        case '+':
+          replace_gem (game, col, row, 999998);
+          break;
+        case '.':
+          replace_gem (game, col, row, 999999);
+          break;
+        }
+      if (pattern[i] == '\n' || pattern[i] == '\0')
+        {
+          ++row;
+          col = 0;
+        }
+      else
+        {
+          ++col;
+        }
+    }
+}
