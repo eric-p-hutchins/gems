@@ -12,9 +12,9 @@ main (int argc, char *argv[])
   replace_gems (game, "\n\
       \n\
   .   \n\
- .*.  \n\
-  *   \n\
-  *   \n\
+ .!.  \n\
+  !   \n\
+  !   \n\
       ");
 
   int i;
@@ -36,8 +36,8 @@ main (int argc, char *argv[])
 
   setup_board_every_gem_different (game);
   replace_gems (game, "\
-  *   \n\
- *.*  \n\
+  !   \n\
+ !.!  \n\
   .   \n\
   .   \n\
   O   \n\
@@ -54,9 +54,9 @@ main (int argc, char *argv[])
   replace_gems (game, "\n\
       \n\
   .   \n\
- .*.. \n\
-  *   \n\
-  *   \n\
+ .!.. \n\
+  !   \n\
+  !   \n\
       ");
 
   for (i = 0; i < 50 * 2; ++i)
@@ -71,8 +71,8 @@ main (int argc, char *argv[])
 
   setup_board_every_gem_different (game);
   replace_gems (game, "\
-  *   \n\
- *.*  \n\
+  !   \n\
+ !.!  \n\
   .   \n\
   .   \n\
   .   \n\
@@ -89,9 +89,9 @@ main (int argc, char *argv[])
   replace_gems (game, "\n\
       \n\
   . . \n\
- .*.*.\n\
-  * * \n\
-  * * \n\
+ .!.!.\n\
+  ! ! \n\
+  ! ! \n\
       ");
 
   for (i = 0; i < 50 * 2; ++i)
@@ -107,8 +107,8 @@ main (int argc, char *argv[])
 
   setup_board_every_gem_different (game);
   replace_gems (game, "\n\
-  *   \n\
- *.*  \n\
+  !   \n\
+ !.!  \n\
   .   \n\
   .   \n\
   .   \n\
@@ -124,8 +124,8 @@ main (int argc, char *argv[])
 
   setup_board_every_gem_different (game);
   replace_gems (game, "\
-  *   \n\
- *.*  \n\
+  !   \n\
+ !.!  \n\
   .   \n\
   .   \n\
   .   \n\
@@ -143,9 +143,9 @@ main (int argc, char *argv[])
 
   setup_board_every_gem_different (game);
   replace_gems (game, "\
-  *   \n\
-  *   \n\
- ***  \n\
+  !   \n\
+  !   \n\
+ !!!  \n\
   O   \n\
   O   \n\
   O   \n\
@@ -162,10 +162,10 @@ main (int argc, char *argv[])
 
   setup_board_every_gem_different (game);
   replace_gems (game, "\
-  *   \n\
-  *   \n\
-  *   \n\
-  O** \n\
+  !   \n\
+  !   \n\
+  !   \n\
+  O!! \n\
   O   \n\
   O   \n\
   O   ");
@@ -181,10 +181,10 @@ main (int argc, char *argv[])
 
   setup_board_every_gem_different (game);
   replace_gems (game, "\
-  *   \n\
-  *   \n\
-  *   \n\
-**O   \n\
+  !   \n\
+  !   \n\
+  !   \n\
+!!O   \n\
   O   \n\
   O   \n\
   O   ");

@@ -89,31 +89,37 @@ replace_gems (game_t *game, char *pattern)
           game->board[col][row] = -1;
           break;
         case '@':
-          replace_gem (game, col, row, 999991);
+          replace_gem (game, col, row, TESTGEM_AT);
           break;
-        case '#':
-          replace_gem (game, col, row, 999992);
+        case '=':
+          replace_gem (game, col, row, TESTGEM_EQUALS);
           break;
         case '$':
-          replace_gem (game, col, row, 999993);
+          replace_gem (game, col, row, TESTGEM_DOLLAR);
           break;
         case '%':
-          replace_gem (game, col, row, 999994);
+          replace_gem (game, col, row, TESTGEM_PERCENT);
           break;
         case '&':
-          replace_gem (game, col, row, 999995);
+          replace_gem (game, col, row, TESTGEM_AMP);
           break;
-        case '*':
-          replace_gem (game, col, row, 999996);
+        case '!':
+          replace_gem (game, col, row, TESTGEM_BANG);
           break;
         case '?':
-          replace_gem (game, col, row, 999997);
+          replace_gem (game, col, row, TESTGEM_QUESTION);
           break;
         case '+':
-          replace_gem (game, col, row, 999998);
+          replace_gem (game, col, row, TESTGEM_PLUS);
           break;
         case '.':
-          replace_gem (game, col, row, 999999);
+          replace_gem (game, col, row, TESTGEM_DOT);
+          break;
+        case '*':
+          replace_gem (game, col, row, TESTGEM_ASTERISK);
+          break;
+        case '#':
+          replace_gem (game, col, row, TESTGEM_HASH);
           break;
         }
       if (pattern[i] == '\n' || pattern[i] == '\0')
