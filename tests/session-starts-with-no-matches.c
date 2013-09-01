@@ -16,8 +16,8 @@ main (int argc, char *argv[])
     {
       for (j = 0; j < game->n_rows - 3; ++j)
         {
-          fail_if (game->board[i][j] == game->board[i][j+1]
-                   && game->board[i][j] == game->board[i][j+2]);
+          fail_if (gem_type (game, i, j) == gem_type (game, i, j + 1)
+                   && gem_type (game, i, j) == gem_type (game, i, j + 2));
         }
     }
 
@@ -25,8 +25,8 @@ main (int argc, char *argv[])
     {
       for (j = 0; j < game->n_cols - 3; ++j)
         {
-          fail_if (game->board[j][i] == game->board[j+1][i]
-                   && game->board[j][i] == game->board[j+2][i]);
+          fail_if (gem_type (game, j, i) == gem_type (game, j + 1, i)
+                   && gem_type (game, j, i) == gem_type (game, j + 2, i));
         }
     }
 

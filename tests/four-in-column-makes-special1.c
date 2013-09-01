@@ -17,15 +17,7 @@ main (int argc, char *argv[])
   int j;
   setup_board_every_gem_different (game);
 
-  int **old_board = (int**)malloc (sizeof (int*) * m);
-  for (i = 0; i < m; ++i)
-    {
-      old_board[i] = (int*)malloc (sizeof (int) * n);
-      for (j = 0; j < n; ++j)
-        {
-          old_board[i][j] = game->board[i][j];
-        }
-    }
+  int **old_board = copy_board (game);
 
   game->n_gem_types = 1000000;
 
@@ -43,67 +35,46 @@ main (int argc, char *argv[])
   bool old_ones_dropped_2 = false;
   bool special_exists_1 = false;
   bool special_exists_2 = false;
-  for (i = 0; i < 50 * 2; ++i)
+  game_loop_n (game, 100);
+  if (game->board[0][n-1] == 1999999)
     {
-      game_loop (game);
-      if (game->board[0][n-1] == 1999999)
+      special_exists_1 = true;
+    }
+  if (game->board[m-1][n-1] == 1999999)
+    {
+      special_exists_2 = true;
+    }
+  old_ones_dropped_1 = true;
+  for (j = 3; j < n - 1; ++j)
+    {
+      if (game->board[0][j] != old_board[0][j-3])
         {
-          special_exists_1 = true;
+          old_ones_dropped_1 = false;
         }
-      if (game->board[m-1][n-1] == 1999999)
+    }
+  old_ones_dropped_2 = true;
+  for (j = 3; j < n - 1; ++j)
+    {
+      if (game->board[m-1][j] != old_board[m-1][j-3])
         {
-          special_exists_2 = true;
-        }
-      if (!old_ones_dropped_1)
-        {
-          old_ones_dropped_1 = true;
-          for (j = 3; j < n - 1; ++j)
-            {
-              if (game->board[0][j] != old_board[0][j-3])
-                {
-                  old_ones_dropped_1 = false;
-                }
-            }
-        }
-      if (!old_ones_dropped_2)
-        {
-          old_ones_dropped_2 = true;
-          for (j = 3; j < n - 1; ++j)
-            {
-              if (game->board[m-1][j] != old_board[m-1][j-3])
-                {
-                  old_ones_dropped_2 = false;
-                }
-            }
-        }
-      if (old_ones_dropped_1 && old_ones_dropped_2)
-        {
-          break;
+          old_ones_dropped_2 = false;
         }
     }
   fail_if (!old_ones_dropped_1 || !old_ones_dropped_2
            || !special_exists_1 || !special_exists_2);
   bool new_gems_1 = false;
   bool new_gems_2 = false;
-  for (i = 0; i < 50 * 2; ++i)
+  if (game->board[0][0] != old_board[0][0]
+      || game->board[0][1] != old_board[0][1]
+      || game->board[0][2] != old_board[0][2])
     {
-      if (game->board[0][0] != old_board[0][0]
-          || game->board[0][1] != old_board[0][1]
-          || game->board[0][2] != old_board[0][2])
-        {
-          new_gems_1 = true;
-        }
-      if (game->board[m-1][0] != old_board[m-1][0]
-          || game->board[m-1][1] != old_board[m-1][1]
-          || game->board[m-1][2] != old_board[m-1][2])
-        {
-          new_gems_2 = true;
-        }
-      if (new_gems_1 && new_gems_2)
-        {
-          break;
-        }
-      game_loop (game);
+      new_gems_1 = true;
+    }
+  if (game->board[m-1][0] != old_board[m-1][0]
+      || game->board[m-1][1] != old_board[m-1][1]
+      || game->board[m-1][2] != old_board[m-1][2])
+    {
+      new_gems_2 = true;
     }
   fail_if (!new_gems_1 || !new_gems_2);
 

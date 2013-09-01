@@ -18,15 +18,7 @@ main (int argc, char *argv[])
   int k;
   setup_board_every_gem_different (game);
 
-  int **old_board = (int**)malloc (sizeof (int*) * m);
-  for (i = 0; i < m; ++i)
-    {
-      old_board[i] = (int*)malloc (sizeof (int) * n);
-      for (j = 0; j < n; ++j)
-        {
-          old_board[i][j] = game->board[i][j];
-        }
-    }
+  int **old_board = copy_board (game);
 
   game->n_gem_types = 1000000;
 
