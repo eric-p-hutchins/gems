@@ -131,6 +131,7 @@ gem_create (int x, int y, int type, int level)
   gem_t *gem = (gem_t*)malloc (sizeof (gem_t));
   gem->x = x;
   gem->y = y;
+  gem->dy = 0;
   gem->type = type;
   gem->level = level;
   return gem;

@@ -39,6 +39,7 @@ setup_board_every_gem_different (game_t *game)
           gem_t *gem = (gem_t*)malloc (sizeof (gem_t));
           gem->x = i * 24;
           gem->y = j * 24;
+          gem->dy = 0;
           gem->type = j * m + i;
           gem->level = 0;
           game_add_gem (game, gem);
@@ -63,6 +64,7 @@ replace_gem (game_t *game, int x, int y, int val)
   gem_t *gem = (gem_t*)malloc (sizeof (gem_t));
   gem->x = x * 24;
   gem->y = y * 24;
+  gem->dy = 0;
   gem->type = val % game->n_gem_types;
   gem->level = val / game->n_gem_types;
   game_add_gem (game, gem);

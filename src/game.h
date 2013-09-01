@@ -12,6 +12,7 @@ typedef struct gem_s gem_t;
 struct gem_s {
   int x;
   int y;
+  int dy;
   int type;
   int level;
 };

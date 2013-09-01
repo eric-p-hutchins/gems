@@ -37,6 +37,7 @@ session_start (game_t *game)
           gem_t *gem = (gem_t*)malloc (sizeof (gem_t));
           gem->x = j * 24;
           gem->y = i * 24;
+          gem->dy = 0;
           gem->type = rand () % game->n_gem_types;
           gem->level = 0;
           game_add_gem (game, gem);
@@ -511,16 +512,31 @@ drop_columns_to_fill_holes (game_t *game)
                 {
                   int x, y;
                   int m;
+                  gem_t *gem = NULL;
                   for (m = 0; m < game->n_gems; ++m)
                     {
-                      gem_t *gem = game->gems[m];
-                      if (gem->x / 24 == i && gem->y / 24 == k - 1)
+                      gem_t *gem_m = game->gems[m];
+                      if (gem_m->x / 24 == i && gem_m->y / 24 == k - 1)
                         {
-                          x = gem->x;
-                          y = gem->y;
+                          gem = gem_m;
                         }
                     }
-                  game_move_gem (game, i, k - 1, x, y + 1);
+                  if (gem != NULL)
+                    {
+                      ++gem->dy;
+                      game_move_gem (game, i, k - 1, gem->x, gem->y + gem->dy);
+                      if (gem->y >= k * 24)
+                        {
+                          game_move_gem (game, i, k, i * 24, k * 24);
+                          bool gem_under_it = k+1 < game->n_rows
+                            && game->board[i][k+1] >= 0;
+                          bool at_bottom = k == game->n_rows - 1;
+                          if (gem_under_it || at_bottom)
+                            {
+                              gem->dy = 0;
+                            }
+                        }
+                    }
                 }
               if (game->board[i][0] < 0)
                 {
