@@ -591,27 +591,9 @@ session_draw_gem (game_t *game, gem_t *gem)
   int k;
   for (k = 1; k < level + 1; ++k)
     {
-      SDL_Rect outline_rect;
-      outline_rect.x = s.x + k * 2;
-      outline_rect.y = s.y + k * 2;
-      outline_rect.w = s.w - k * 4;
-      outline_rect.h = 1;
-      SDL_FillRect (game->screen, &outline_rect, white);
-      outline_rect.x = s.x + k * 2;
-      outline_rect.y = s.y + s.h - 1 - k * 2;
-      outline_rect.w = s.w - k * 4;
-      outline_rect.h = 1;
-      SDL_FillRect (game->screen, &outline_rect, black);
-      outline_rect.x = s.x + k * 2;
-      outline_rect.y = s.y + k * 2;
-      outline_rect.w = 1;
-      outline_rect.h = s.h - k * 4;
-      SDL_FillRect (game->screen, &outline_rect, white);
-      outline_rect.x = s.x + s.w - 1 - k * 2;
-      outline_rect.y = s.y + k * 2;
-      outline_rect.w = 1;
-      outline_rect.h = s.h - k * 4;
-      SDL_FillRect (game->screen, &outline_rect, black);
+      d.x += 4;
+      d.y += 4;
+      SDL_BlitSurface (game->sprite, &src, game->screen, &d);
     }
 }
 
