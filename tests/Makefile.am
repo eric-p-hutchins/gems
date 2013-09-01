@@ -36,7 +36,8 @@ TESTS = \
  remove-gem \
  swap-gems \
  special1-match \
- matches-only-happen-when-settled
+ matches-only-happen-when-settled \
+ special2-match
 
 GAME_SOURCES = \
  test.c \
@@ -80,5 +81,6 @@ remove_gem_SOURCES = remove-gem.c $(GAME_SOURCES)
 swap_gems_SOURCES = swap-gems.c $(GAME_SOURCES)
 special1_match_SOURCES = special1-match.c $(GAME_SOURCES)
 matches_only_happen_when_settled_SOURCES = matches-only-happen-when-settled.c $(GAME_SOURCES)
+special2_match_SOURCES = special2-match.c $(GAME_SOURCES)
 
 check_PROGRAMS = $(TESTS)

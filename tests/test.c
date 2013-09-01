@@ -133,3 +133,13 @@ replace_gems (game_t *game, char *pattern)
         }
     }
 }
+
+void
+game_loop_n (game_t *game, int n)
+{
+  int i;
+  for (i = 0; i < n; ++i)
+    {
+      game_loop (game);
+    }
+}

@@ -755,17 +755,14 @@ handle_special1_gem (game_t *game, int x, int y)
 }
 
 void
-handle_special1_gems (game_t *game)
+handle_special2_gem (game_t *game, int x, int y)
 {
   int i, j;
-  for (i = 0; i < game->n_rows; ++i)
+  for (i = x - 1; i <= x + 1; ++i)
     {
-      for (j = 0; j < game->n_cols; ++j)
+      for (j = y - 1; j <= y + 1; ++j)
         {
-          if (game->board[j][i] == -2)
-            {
-              handle_special1_gem (game, j, i);
-            }
+          replace_with_hole (game, i, j);
         }
     }
 }
@@ -773,7 +770,22 @@ handle_special1_gems (game_t *game)
 void
 handle_special_gems (game_t *game)
 {
-  handle_special1_gems (game);
+  int i, j;
+  for (i = 0; i < game->n_rows; ++i)
+    {
+      for (j = 0; j < game->n_cols; ++j)
+        {
+          switch (game->board[j][i])
+            {
+            case -2:
+              handle_special1_gem (game, j, i);
+              break;
+            case -3:
+              handle_special2_gem (game, j, i);
+              break;
+            }
+        }
+    }
 }
 
 void
