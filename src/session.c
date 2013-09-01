@@ -182,175 +182,33 @@ replace_with_hole (game_t *game, int x, int y)
 }
 
 void
-handle_t_shape (game_t *game)
+for_each_board_position_holes (game_t *game, void (*func)(game_t*, int, int),
+                               bool holes)
 {
   int i, j;
   for (i = 0; i < game->n_rows; ++i)
     {
       for (j = 0; j < game->n_cols; ++j)
         {
-          if (game->board[j][i] < 0)
+          if (!holes && game->board[j][i] < 0)
             {
               continue;
             }
-          if (j >= 1 && j < game->n_cols - 1
-              && i < game->n_rows - 2
-              && game->column_settled[j-1]
-              && game->column_settled[j]
-              && game->column_settled[j+1]
-              && game->board[j][i] == game->board[j-1][i]
-              && game->board[j][i] == game->board[j+1][i]
-              && game->board[j][i] == game->board[j][i+1]
-              && game->board[j][i] == game->board[j][i+2])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j-1, i);
-              replace_with_hole (game, j+1, i);
-              replace_with_hole (game, j, i+1);
-              replace_with_hole (game, j, i+2);
-            }
-          else if (i >= 1 && i < game->n_rows - 1
-                   && j < game->n_cols - 2
-                   && game->column_settled[j]
-                   && game->column_settled[j+1]
-                   && game->column_settled[j+2]
-                   && game->board[j][i] == game->board[j][i-1]
-                   && game->board[j][i] == game->board[j][i+1]
-                   && game->board[j][i] == game->board[j+1][i]
-                   && game->board[j][i] == game->board[j+2][i])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j, i-1);
-              replace_with_hole (game, j, i+1);
-              replace_with_hole (game, j+1, i);
-              replace_with_hole (game, j+2, i);
-            }
-          else if (j >= 1 && j < game->n_cols - 1
-                   && i > 1
-                   && game->column_settled[j-1]
-                   && game->column_settled[j]
-                   && game->column_settled[j+1]
-                   && game->board[j][i] == game->board[j-1][i]
-                   && game->board[j][i] == game->board[j+1][i]
-                   && game->board[j][i] == game->board[j][i-1]
-                   && game->board[j][i] == game->board[j][i-2])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j-1, i);
-              replace_with_hole (game, j+1, i);
-              replace_with_hole (game, j, i-1);
-              replace_with_hole (game, j, i-2);
-            }
-          else if (i >= 1 && i < game->n_rows - 1
-                   && j > 1
-                   && game->column_settled[j]
-                   && game->column_settled[j-1]
-                   && game->column_settled[j-2]
-                   && game->board[j][i] == game->board[j][i-1]
-                   && game->board[j][i] == game->board[j][i+1]
-                   && game->board[j][i] == game->board[j-1][i]
-                   && game->board[j][i] == game->board[j-2][i])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j, i-1);
-              replace_with_hole (game, j, i+1);
-              replace_with_hole (game, j-1, i);
-              replace_with_hole (game, j-2, i);
-            }
+          func (game, j, i);
         }
     }
 }
 
 void
-handle_l_shape (game_t *game)
+for_each_board_position (game_t *game, void (*func)(game_t*, int, int))
 {
-  int i, j;
-  for (i = 0; i < game->n_rows; ++i)
-    {
-      for (j = 0; j < game->n_cols; ++j)
-        {
-          if (game->board[j][i] < 0)
-            {
-              continue;
-            }
-          if (j < game->n_cols - 2 && i < game->n_rows - 2
-              && game->column_settled[j]
-              && game->column_settled[j+1]
-              && game->column_settled[j+2]
-              && game->board[j][i] == game->board[j+1][i]
-              && game->board[j][i] == game->board[j+2][i]
-              && game->board[j][i] == game->board[j][i+1]
-              && game->board[j][i] == game->board[j][i+2])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j+1, i);
-              replace_with_hole (game, j+2, i);
-              replace_with_hole (game, j, i+1);
-              replace_with_hole (game, j, i+2);
-            }
-          else if (i >= 2 && j < game->n_cols - 2
-                   && game->column_settled[j]
-                   && game->column_settled[j+1]
-                   && game->column_settled[j+2]
-                   && game->board[j][i] == game->board[j][i-1]
-                   && game->board[j][i] == game->board[j][i-2]
-                   && game->board[j][i] == game->board[j+1][i]
-                   && game->board[j][i] == game->board[j+2][i])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j, i-1);
-              replace_with_hole (game, j, i-2);
-              replace_with_hole (game, j+1, i);
-              replace_with_hole (game, j+2, i);
-            }
-          else if (j >= 2 && i >= 2
-                   && game->column_settled[j]
-                   && game->column_settled[j-1]
-                   && game->column_settled[j-2]
-                   && game->board[j][i] == game->board[j-1][i]
-                   && game->board[j][i] == game->board[j-2][i]
-                   && game->board[j][i] == game->board[j][i-1]
-                   && game->board[j][i] == game->board[j][i-2])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j-1, i);
-              replace_with_hole (game, j-2, i);
-              replace_with_hole (game, j, i-1);
-              replace_with_hole (game, j, i-2);
-            }
-          else if (j >= 2 && i < game->n_rows - 2
-                   && game->column_settled[j]
-                   && game->column_settled[j-1]
-                   && game->column_settled[j-2]
-                   && game->board[j][i] == game->board[j][i+1]
-                   && game->board[j][i] == game->board[j][i+2]
-                   && game->board[j][i] == game->board[j-1][i]
-                   && game->board[j][i] == game->board[j-2][i])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i);
-              game_add_gem (game, gem_create (j * 24, i * 24, type, 2));
-              replace_with_hole (game, j, i+1);
-              replace_with_hole (game, j, i+2);
-              replace_with_hole (game, j-1, i);
-              replace_with_hole (game, j-2, i);
-            }
-        }
-    }
+  for_each_board_position_holes (game, func, true);
+}
+
+void
+for_each_non_hole_board_position (game_t *game, void (*func)(game_t*, int, int))
+{
+  for_each_board_position_holes (game, func, false);
 }
 
 bool
@@ -368,133 +226,250 @@ column_settled (game_t *game, int x)
 }
 
 void
-handle_three_in_row_or_column (game_t *game)
+handle_t_shape_x_y (game_t *game, int x, int y)
 {
-  int i, j;
-  for (i = 0; i < game->n_rows; ++i)
+  if (x >= 1 && x < game->n_cols - 1
+      && y < game->n_rows - 2
+      && game->column_settled[x-1]
+      && game->column_settled[x]
+      && game->column_settled[x+1]
+      && game->board[x][y] == game->board[x-1][y]
+      && game->board[x][y] == game->board[x+1][y]
+      && game->board[x][y] == game->board[x][y+1]
+      && game->board[x][y] == game->board[x][y+2])
     {
-      for (j = 0; j < game->n_cols; ++j)
-        {
-          if (game->board[j][i] < 0)
-            {
-              continue;
-            }
-          if (i >= 2
-              && game->column_settled[j]
-              && gem_type (game, j, i) == gem_type (game, j, i - 1)
-              && gem_type (game, j, i) == gem_type (game, j, i - 2))
-            {
-              replace_with_hole (game, j, i);
-              replace_with_hole (game, j, i-1);
-              replace_with_hole (game, j, i-2);
-            }
-          else if (j < game->n_cols - 2
-                   && game->column_settled[j]
-                   && game->column_settled[j+1]
-                   && game->column_settled[j+2]
-                   && gem_type (game, j, i) == gem_type (game, j + 1, i)
-                   && gem_type (game, j, i) == gem_type (game, j + 2, i))
-            {
-              replace_with_hole (game, j, i);
-              replace_with_hole (game, j+1, i);
-              replace_with_hole (game, j+2, i);
-            }
-        }
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x-1, y);
+      replace_with_hole (game, x+1, y);
+      replace_with_hole (game, x, y+1);
+      replace_with_hole (game, x, y+2);
+    }
+  else if (y >= 1 && y < game->n_rows - 1
+           && x < game->n_cols - 2
+           && game->column_settled[x]
+           && game->column_settled[x+1]
+           && game->column_settled[x+2]
+           && game->board[x][y] == game->board[x][y-1]
+           && game->board[x][y] == game->board[x][y+1]
+           && game->board[x][y] == game->board[x+1][y]
+           && game->board[x][y] == game->board[x+2][y])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x, y-1);
+      replace_with_hole (game, x, y+1);
+      replace_with_hole (game, x+1, y);
+      replace_with_hole (game, x+2, y);
+    }
+  else if (x >= 1 && x < game->n_cols - 1
+           && y > 1
+           && game->column_settled[x-1]
+           && game->column_settled[x]
+           && game->column_settled[x+1]
+           && game->board[x][y] == game->board[x-1][y]
+           && game->board[x][y] == game->board[x+1][y]
+           && game->board[x][y] == game->board[x][y-1]
+           && game->board[x][y] == game->board[x][y-2])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x-1, y);
+      replace_with_hole (game, x+1, y);
+      replace_with_hole (game, x, y-1);
+      replace_with_hole (game, x, y-2);
+    }
+  else if (y >= 1 && y < game->n_rows - 1
+           && x > 1
+           && game->column_settled[x]
+           && game->column_settled[x-1]
+           && game->column_settled[x-2]
+           && game->board[x][y] == game->board[x][y-1]
+           && game->board[x][y] == game->board[x][y+1]
+           && game->board[x][y] == game->board[x-1][y]
+           && game->board[x][y] == game->board[x-2][y])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x, y-1);
+      replace_with_hole (game, x, y+1);
+      replace_with_hole (game, x-1, y);
+      replace_with_hole (game, x-2, y);
     }
 }
 
 void
-handle_four_in_row_or_column (game_t *game)
+handle_l_shape_x_y (game_t *game, int x, int y)
 {
-  int i, j;
-  for (i = 0; i < game->n_rows; ++i)
+  if (x < game->n_cols - 2 && y < game->n_rows - 2
+      && game->column_settled[x]
+      && game->column_settled[x+1]
+      && game->column_settled[x+2]
+      && game->board[x][y] == game->board[x+1][y]
+      && game->board[x][y] == game->board[x+2][y]
+      && game->board[x][y] == game->board[x][y+1]
+      && game->board[x][y] == game->board[x][y+2])
     {
-      for (j = 0; j < game->n_cols; ++j)
-        {
-          if (game->board[j][i] < 0)
-            {
-              continue;
-            }
-          if (i >= 3
-              && game->column_settled[j]
-              && game->board[j][i] == game->board[j][i-1]
-              && game->board[j][i] == game->board[j][i-2]
-              && game->board[j][i] == game->board[j][i-3])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              replace_with_hole (game, j, i);
-              game_remove_gem (game, j, i-1);
-              game_add_gem (game, gem_create (j * 24, (i-1) * 24, type, 1));
-              replace_with_hole (game, j, i-2);
-              replace_with_hole (game, j, i-3);
-            }
-          else if (j < game->n_cols - 3
-                   && game->column_settled[j]
-                   && game->column_settled[j+1]
-                   && game->column_settled[j+2]
-                   && game->column_settled[j+3]
-                   && game->board[j][i] == game->board[j+1][i]
-                   && game->board[j][i] == game->board[j+2][i]
-                   && game->board[j][i] == game->board[j+3][i])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j+1, i);
-              game_add_gem (game, gem_create ((j+1) * 24, i * 24, type, 1));
-              replace_with_hole (game, j, i);
-              replace_with_hole (game, j+2, i);
-              replace_with_hole (game, j+3, i);
-            }
-        }
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x+1, y);
+      replace_with_hole (game, x+2, y);
+      replace_with_hole (game, x, y+1);
+      replace_with_hole (game, x, y+2);
+    }
+  else if (y >= 2 && x < game->n_cols - 2
+           && game->column_settled[x]
+           && game->column_settled[x+1]
+           && game->column_settled[x+2]
+           && game->board[x][y] == game->board[x][y-1]
+           && game->board[x][y] == game->board[x][y-2]
+           && game->board[x][y] == game->board[x+1][y]
+           && game->board[x][y] == game->board[x+2][y])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x, y-1);
+      replace_with_hole (game, x, y-2);
+      replace_with_hole (game, x+1, y);
+      replace_with_hole (game, x+2, y);
+    }
+  else if (x >= 2 && y >= 2
+           && game->column_settled[x]
+           && game->column_settled[x-1]
+           && game->column_settled[x-2]
+           && game->board[x][y] == game->board[x-1][y]
+           && game->board[x][y] == game->board[x-2][y]
+           && game->board[x][y] == game->board[x][y-1]
+           && game->board[x][y] == game->board[x][y-2])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x-1, y);
+      replace_with_hole (game, x-2, y);
+      replace_with_hole (game, x, y-1);
+      replace_with_hole (game, x, y-2);
+    }
+  else if (x >= 2 && y < game->n_rows - 2
+           && game->column_settled[x]
+           && game->column_settled[x-1]
+           && game->column_settled[x-2]
+           && game->board[x][y] == game->board[x][y+1]
+           && game->board[x][y] == game->board[x][y+2]
+           && game->board[x][y] == game->board[x-1][y]
+           && game->board[x][y] == game->board[x-2][y])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y);
+      game_add_gem (game, gem_create (x * 24, y * 24, type, 2));
+      replace_with_hole (game, x, y+1);
+      replace_with_hole (game, x, y+2);
+      replace_with_hole (game, x-1, y);
+      replace_with_hole (game, x-2, y);
     }
 }
 
 void
-handle_five_in_row_or_column (game_t *game)
+handle_three_in_row_or_column_x_y (game_t *game, int x, int y)
 {
-  int i, j;
-  for (i = 0; i < game->n_rows; ++i)
+  if (y >= 2
+      && game->column_settled[x]
+      && gem_type (game, x, y) == gem_type (game, x, y - 1)
+      && gem_type (game, x, y) == gem_type (game, x, y - 2))
     {
-      for (j = 0; j < game->n_cols; ++j)
-        {
-          if (game->board[j][i] < 0)
-            {
-              continue;
-            }
-          if (i >= 4
-              && game->column_settled[j]
-              && game->board[j][i] == game->board[j][i-1]
-              && game->board[j][i] == game->board[j][i-2]
-              && game->board[j][i] == game->board[j][i-3]
-              && game->board[j][i] == game->board[j][i-4])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j, i-2);
-              game_add_gem (game, gem_create (j * 24, (i-2) * 24, type, 3));
-              replace_with_hole (game, j, i);
-              replace_with_hole (game, j, i-1);
-              replace_with_hole (game, j, i-3);
-              replace_with_hole (game, j, i-4);
-            }
-          else if (j < game->n_cols - 4
-                   && game->column_settled[j]
-                   && game->column_settled[j+1]
-                   && game->column_settled[j+2]
-                   && game->column_settled[j+3]
-                   && game->column_settled[j+4]
-                   && game->board[j][i] == game->board[j+1][i]
-                   && game->board[j][i] == game->board[j+2][i]
-                   && game->board[j][i] == game->board[j+3][i]
-                   && game->board[j][i] == game->board[j+4][i])
-            {
-              int type = game->board[j][i] % game->n_gem_types;
-              game_remove_gem (game, j+2, i);
-              game_add_gem (game, gem_create ((j+2) * 24, i * 24, type, 3));
-              replace_with_hole (game, j, i);
-              replace_with_hole (game, j+1, i);
-              replace_with_hole (game, j+3, i);
-              replace_with_hole (game, j+4, i);
-            }
-        }
+      replace_with_hole (game, x, y);
+      replace_with_hole (game, x, y-1);
+      replace_with_hole (game, x, y-2);
+    }
+  else if (x < game->n_cols - 2
+           && game->column_settled[x]
+           && game->column_settled[x+1]
+           && game->column_settled[x+2]
+           && gem_type (game, x, y) == gem_type (game, x + 1, y)
+           && gem_type (game, x, y) == gem_type (game, x + 2, y))
+    {
+      replace_with_hole (game, x, y);
+      replace_with_hole (game, x+1, y);
+      replace_with_hole (game, x+2, y);
+    }
+}
+
+void
+handle_four_in_row_or_column_x_y (game_t *game, int x, int y)
+{
+  if (y >= 3
+      && game->column_settled[x]
+      && game->board[x][y] == game->board[x][y-1]
+      && game->board[x][y] == game->board[x][y-2]
+      && game->board[x][y] == game->board[x][y-3])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      replace_with_hole (game, x, y);
+      game_remove_gem (game, x, y-1);
+      game_add_gem (game, gem_create (x * 24, (y-1) * 24, type, 1));
+      replace_with_hole (game, x, y-2);
+      replace_with_hole (game, x, y-3);
+    }
+  else if (x < game->n_cols - 3
+           && game->column_settled[x]
+           && game->column_settled[x+1]
+           && game->column_settled[x+2]
+           && game->column_settled[x+3]
+           && game->board[x][y] == game->board[x+1][y]
+           && game->board[x][y] == game->board[x+2][y]
+           && game->board[x][y] == game->board[x+3][y])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x+1, y);
+      game_add_gem (game, gem_create ((x+1) * 24, y * 24, type, 1));
+      replace_with_hole (game, x, y);
+      replace_with_hole (game, x+2, y);
+      replace_with_hole (game, x+3, y);
+    }
+}
+
+void
+handle_five_in_row_or_column_x_y (game_t *game, int x, int y)
+{
+  if (y >= 4
+      && game->column_settled[x]
+      && game->board[x][y] == game->board[x][y-1]
+      && game->board[x][y] == game->board[x][y-2]
+      && game->board[x][y] == game->board[x][y-3]
+      && game->board[x][y] == game->board[x][y-4])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x, y-2);
+      game_add_gem (game, gem_create (x * 24, (y-2) * 24, type, 3));
+      replace_with_hole (game, x, y);
+      replace_with_hole (game, x, y-1);
+      replace_with_hole (game, x, y-3);
+      replace_with_hole (game, x, y-4);
+    }
+  else if (x < game->n_cols - 4
+           && game->column_settled[x]
+           && game->column_settled[x+1]
+           && game->column_settled[x+2]
+           && game->column_settled[x+3]
+           && game->column_settled[x+4]
+           && game->board[x][y] == game->board[x+1][y]
+           && game->board[x][y] == game->board[x+2][y]
+           && game->board[x][y] == game->board[x+3][y]
+           && game->board[x][y] == game->board[x+4][y])
+    {
+      int type = game->board[x][y] % game->n_gem_types;
+      game_remove_gem (game, x+2, y);
+      game_add_gem (game, gem_create ((x+2) * 24, y * 24, type, 3));
+      replace_with_hole (game, x, y);
+      replace_with_hole (game, x+1, y);
+      replace_with_hole (game, x+3, y);
+      replace_with_hole (game, x+4, y);
     }
 }
 
@@ -774,23 +749,16 @@ handle_special2_gem (game_t *game, int x, int y)
 }
 
 void
-handle_special_gems (game_t *game)
+handle_special_gems_x_y (game_t *game, int x, int y)
 {
-  int i, j;
-  for (i = 0; i < game->n_rows; ++i)
+  switch (game->board[x][y])
     {
-      for (j = 0; j < game->n_cols; ++j)
-        {
-          switch (game->board[j][i])
-            {
-            case -2:
-              handle_special1_gem (game, j, i);
-              break;
-            case -3:
-              handle_special2_gem (game, j, i);
-              break;
-            }
-        }
+    case -2:
+      handle_special1_gem (game, x, y);
+      break;
+    case -3:
+      handle_special2_gem (game, x, y);
+      break;
     }
 }
 
@@ -809,12 +777,12 @@ session_loop (game_t *game)
 {
   update_columns_settled (game);
   session_handle_keys (game);
-  handle_five_in_row_or_column (game);
-  handle_t_shape (game);
-  handle_l_shape (game);
-  handle_four_in_row_or_column (game);
-  handle_three_in_row_or_column (game);
-  handle_special_gems (game);
+  for_each_non_hole_board_position (game, handle_five_in_row_or_column_x_y);
+  for_each_non_hole_board_position (game, handle_t_shape_x_y);
+  for_each_non_hole_board_position (game, handle_l_shape_x_y);
+  for_each_non_hole_board_position (game, handle_four_in_row_or_column_x_y);
+  for_each_non_hole_board_position (game, handle_three_in_row_or_column_x_y);
+  for_each_board_position (game, handle_special_gems_x_y);
   drop_columns_to_fill_holes (game);
   session_draw (game);
 }
