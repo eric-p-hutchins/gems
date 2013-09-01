@@ -194,10 +194,10 @@ handle_t_shape (game_t *game)
               continue;
             }
           if (j >= 1 && j < game->n_cols - 1
+              && i < game->n_rows - 2
               && game->column_settled[j-1]
               && game->column_settled[j]
               && game->column_settled[j+1]
-              && i < game->n_rows - 2
               && game->board[j][i] == game->board[j-1][i]
               && game->board[j][i] == game->board[j+1][i]
               && game->board[j][i] == game->board[j][i+1]
@@ -212,10 +212,10 @@ handle_t_shape (game_t *game)
               replace_with_hole (game, j, i+2);
             }
           else if (i >= 1 && i < game->n_rows - 1
+                   && j < game->n_cols - 2
                    && game->column_settled[j]
                    && game->column_settled[j+1]
                    && game->column_settled[j+2]
-                   && j < game->n_cols - 2
                    && game->board[j][i] == game->board[j][i-1]
                    && game->board[j][i] == game->board[j][i+1]
                    && game->board[j][i] == game->board[j+1][i]
@@ -776,8 +776,16 @@ handle_special2_gem (game_t *game, int x, int y)
   int i, j;
   for (i = x - 1; i <= x + 1; ++i)
     {
+      if (i < 0 || i >= game->n_cols)
+        {
+          continue;
+        }
       for (j = y - 1; j <= y + 1; ++j)
         {
+          if (j < 0 || j >= game->n_rows)
+            {
+              continue;
+            }
           replace_with_hole (game, i, j);
         }
     }
