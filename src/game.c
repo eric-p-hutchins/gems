@@ -49,7 +49,7 @@ game_create ()
   game->prev_key_states = (bool*)malloc (sizeof (bool) * N_KEYS);
   memset (game->prev_key_states, false, N_KEYS);
   game->cursor_locked = false;
-  game->sprite = game_load_image ("gems.png");
+  game->sprite = game_load_image ("gems-new.png");
   game->frame_sprite = game_load_image ("slot.png");
   game->button_sprite = game_load_image ("buttons.png");
   game->menu_held_down = false;

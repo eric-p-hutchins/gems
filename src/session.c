@@ -11,7 +11,7 @@ session_start (game_t *game)
   game->state = SESSION_STATE;
   game->n_rows = 8;
   game->n_cols = 8;
-  game->n_gem_types = 4;
+  game->n_gem_types = 6;
   game->column_settled = (bool*)malloc (sizeof (bool) * game->n_cols);
   game->board = (int**)malloc (sizeof (int*) * game->n_cols);
   int i;
@@ -559,17 +559,9 @@ session_draw_gem (game_t *game, gem_t *gem)
     }
   Uint32 color = SDL_MapRGB (game->screen->format, r, g, b);
 
-  SDL_Rect src = { 320 + gem->type * 32 + 4, 132, 24, 24 };
+  SDL_Rect src = { gem->type * 24, gem->level * 24, 24, 24 };
   SDL_Rect d = { s.x, s.y, 0, 0 };
   SDL_BlitSurface (game->sprite, &src, game->screen, &d);
-
-  int k;
-  for (k = 1; k < level + 1; ++k)
-    {
-      d.x += 4;
-      d.y += 4;
-      SDL_BlitSurface (game->sprite, &src, game->screen, &d);
-    }
 }
 
 void
